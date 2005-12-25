@@ -15,6 +15,9 @@ column password =>,
     type is 'text',
     render_as 'password';
 
+column email_confirmed =>
+    type is 'boolean',
+    since '0.0.10';
 
 
 package Wifty::Model::User;
@@ -29,4 +32,30 @@ sub create {
     return($id);
 }
 
+
+=head2 password_is STRING
+
+Returns true if and only if the current user's password matches STRING
+
+=cut
+
+
+sub password_is {
+    my $self = shift;
+    my $string = shift;
+    warn "Checking $string";
+    return 1 if ($self->_value('password') eq $string);
+    return 0;
+}
+
+=head2 password
+
+Never display a password
+
+=cut
+
+sub password {
+    return undef;
+
+}
 1;
