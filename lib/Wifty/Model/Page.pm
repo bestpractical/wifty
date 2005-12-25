@@ -88,7 +88,7 @@ sub _add_revision {
     my $self = shift;
     my %args = (@_);
 
-    my $rev = Wifty::Model::Revision->new();
+    my $rev = Wifty::Model::Revision->new( current_user => Wifty::CurrentUser->superuser);
     $rev->create(
         page    => $self->id,
         content => $args{'content'}
