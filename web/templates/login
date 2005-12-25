@@ -1,0 +1,18 @@
+<%init> 
+if (Jifty->web->current_user->id) {
+    $m->comp('/_elements/logged_in_already');
+    return();
+}
+my $action = Jifty->web->new_action(class => 'Login', moniker => 'loginbox' );
+
+my $next = Jifty->web->request->continuation || Jifty::Continuation->new(request => Jifty::Request->new(path => "/"));
+</%init>
+<&|/_elements/wrapper, title => 'Login' &>
+<h2>Login</h2>
+<% Jifty->web->form->start(call => $next, name => "loginbox") %>
+<% $action->form_field('email') %>
+<% $action->form_field('password') %>
+<% $action->form_field('remember') %>
+<% Jifty->web->form->submit(label => 'Login', submit => $action) %>
+<% Jifty->web->form->end %>
+</&>

@@ -1,11 +1,11 @@
 framework:
-  AdminMode: 0
+  AdminMode: 1
   LogConfig: etc/btdt.log4perl.conf
   Database:
     Driver: Pg
     Host: localhost
     User: postgres
-    Version: 0.0.8
+    Version: 0.0.10
     Password: ''
     RequireSSL: 0
 #  Mailer: IO
