@@ -50,17 +50,16 @@ sub wiki_content {
 
 }
 
-
 sub create {
     my $self = shift;
     my %args = (@_);
-    my $now = DateTime->now();
-    $args{'updated'} =  $now->ymd." ".$now->hms;
+    my $now  = DateTime->now();
+    $args{'updated'} = $now->ymd . " " . $now->hms;
     my ($id) = $self->SUPER::create(%args);
-    if ($self->id) { 
+    if ( $self->id ) {
         $self->_add_revision(%args);
     }
-    return($id);
+    return ($id);
 }
 
 =head2 _add_revision 
@@ -88,19 +87,22 @@ sub _add_revision {
 }
 
 sub set_content {
-    my $self = shift;
+    my $self    = shift;
     my $content = shift;
-    my ($val, $msg) = $self->SUPER::set_content($content);
-    $self->_add_revision(content =>$content );
-    return ($val,$msg);
+    my ( $val, $msg ) = $self->SUPER::set_content($content);
+    $self->_add_revision( content => $content );
+    return ( $val, $msg );
 }
 
 sub _set {
     my $self = shift;
-    my ($val,$msg) = $self->SUPER::_set(@_);
+    my ( $val, $msg ) = $self->SUPER::_set(@_);
     my $now = DateTime->now();
-    $self->SUPER::_set( column => 'updated', value =>   $now->ymd." ".$now->hms);
-    return ($val,$msg);
+    $self->SUPER::_set(
+        column => 'updated',
+        value  => $now->ymd . " " . $now->hms
+    );
+    return ( $val, $msg );
 }
 
 1;

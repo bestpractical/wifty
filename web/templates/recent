@@ -1,8 +1,8 @@
 <%init>
-my $then = DateTime->from_epoch(epoch => (time - (86400*7)));
+my $then = DateTime->from_epoch( epoch => ( time - ( 86400 * 7 ) ) );
 my $pages = Wifty::Model::PageCollection->new();
 $pages->limit( column => 'updated', operator => '>', value => $then->ymd );
-$pages->order_by( column => 'updated', order => 'desc');
+$pages->order_by( column => 'updated', order => 'desc' );
 </%init>
 <&|/_elements/wrapper, title => 'Updated this week' &>
 <dl id="recentudates">

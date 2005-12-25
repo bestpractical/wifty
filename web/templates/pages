@@ -1,12 +1,17 @@
 <%init>
 my $pages = Wifty::Model::PageCollection->new();
 $pages->unlimit();
-
 </%init>
 <&|/_elements/wrapper, title => 'These are the pages on your wiki!' &>
 <ul id="pagelist">
 % while (my $page = $pages->next) {
-<li><% Jifty->web->link( label => $page->name, url => '/view/'.$page->name)%></li>
+<li><% 
+        Jifty->web->link(
+            label => $page->name,
+            url   => '/view/' . $page->name
+            );
+
+    %></li>
 % } 
 </ul>
 </&>
