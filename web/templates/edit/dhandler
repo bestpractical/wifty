@@ -1,7 +1,7 @@
 <%init>
 my $arg = $m->dhandler_arg();
 my ($name,$rev);
-if ($arg =~ qr{^(.*?)/?(\d?)$}) {
+if ($arg =~ qr{^(.*?)/?(\d*?)$}) {
     $name = $1;
     $rev = $2;
 }
