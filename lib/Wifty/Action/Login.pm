@@ -76,7 +76,7 @@ sub take_action {
     }
 
     unless ($user->user_object->email_confirmed) {
-        $self->result->error( q{You haven't <a href="/welcome/confirm.html">confirmed your account</a> yet.} );
+        $self->result->error( q{You haven't confirmed your account yet.} );
         return;
     }
 

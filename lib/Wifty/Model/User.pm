@@ -22,14 +22,19 @@ column email_confirmed =>
 
 package Wifty::Model::User;
 use base qw/Wifty::Record/;
+use Wifty::Notification::ConfirmAddress;
 
 sub since {'0.0.7'}
 
 sub create {
     my $self = shift;
     my %args = (@_);
-    my ($id) = $self->SUPER::create(%args);
-    return($id);
+    my (@ret) = $self->SUPER::create(%args);
+
+    if ($self->id and not $self->email_confirmed) {
+        Wifty::Notification::ConfirmAddress->new( to => $self )->send;
+    }
+    return (@ret);
 }
 
 
@@ -63,10 +68,10 @@ sub current_user_can {
     my $self = shift;
     my $right = shift;
     my %args = (@_);
-
+    return(1);
     if ($right eq 'read')  {
 
-    } elsif ($right eq 'write') {
+    } elsif ($right eq 'update') {
 
     }
 

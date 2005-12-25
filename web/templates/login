@@ -15,4 +15,5 @@ my $next = Jifty->web->request->continuation || Jifty::Continuation->new(request
 <% $action->form_field('remember') %>
 <% Jifty->web->form->submit(label => 'Login', submit => $action) %>
 <% Jifty->web->form->end %>
+<% Jifty->web->tangent( label => q{Don't have an account?}, url => '/signup' )%>
 </&>

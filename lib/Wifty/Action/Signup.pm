@@ -36,11 +36,8 @@ sub arguments {
     my $args = $self->SUPER::arguments;
 
     my %fields = ( 
+        name                        => 1,
         email                        => 1,
-        likes_ticky_boxes            => 1,
-        name                         => 1,
-        never_email                  => 1,
-        notification_email_frequency => 1,
         password                     => 1,
         password_confirm             => 1,
     );
@@ -62,14 +59,13 @@ sub validate_email {
     my $self  = shift;
     my $email = shift;
 
-    unless ( $email =~ /\S\@\S/ ) {
-        return $self->validation_error(email => "That doesn't look like an email address." );
-    }
+        return $self->validation_error(email => "That doesn't look like an email address." )
+    unless ( $email =~ /\S\@\S/ ) ;
 
     my $u = Wifty::Model::User->new(current_user => Wifty::CurrentUser->superuser);
     $u->load_by_cols( email => $email );
     if ($u->id) {
-      return $self->validation_error(email => 'It looks like you already have an account. Perhaps you want to <a href="/welcome/">sign in</a> instead?');
+      return $self->validation_error(email => 'It looks like you already have an account. Perhaps you want to <a href="/login">sign in</a> instead?');
     }
 
     return $self->validation_ok('email');
@@ -98,11 +94,11 @@ sub take_action {
     my ($id) = $record->create(%values);
     # Handle errors?
     unless ( $record->id ) {
-        $self->result->error("Something bad happened and we couldn't create your account.  Try again later");
+        $self->result->error("Something bad happened and we couldn't create your account.  Try again later. We're really, really sorry.");
         return;
     }
 
-    $self->result->message( "Welcome to Wifty, " . $record->name .".");
+    $self->result->message( "Welcome to Wifty, " . $record->name .". We've sent a confirmation message to your email box.");
 
 
     return 1;
