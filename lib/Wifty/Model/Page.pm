@@ -25,6 +25,7 @@ use Wifty::Model::RevisionCollection;
 use Text::Markdown;
 use HTML::Scrubber;
 
+
 =head2 wiki_content [CONTENT]
 
 Wikify either the content of a scalar passed in as an argument or
@@ -55,7 +56,7 @@ sub wiki_content {
     $scrubber->allow(
         qw[A B U P BR I HR BR SMALL EM FONT SPAN DIV UL OL LI DL DT DD]);
     $scrubber->comment(0);
-    return ( markdown( $scrubber->scrub( $content ) ) );
+    return ( $scrubber->scrub( markdown( $content ) ) );
 
 }
 

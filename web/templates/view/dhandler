@@ -1,4 +1,5 @@
 <%init>
+use Wifty::Model::Page;
 my $arg = $m->dhandler_arg();
 my ($name,$rev);
 if ($arg =~ qr{^(.*?)/?(\d*?)$}) {
