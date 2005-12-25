@@ -1,5 +1,5 @@
 <%init>
-my $subpath =  $page . ($rev ? "/rev/$rev" : '');
+my $subpath =  $page . ($rev ? "/$rev" : '');
 my $top = Jifty->web->navigation;
 my $this = $top->child( 
     This => 
@@ -20,7 +20,7 @@ $this->child(
 
 $this->child(
     History =>
-        url => '/history/'.$subpath
+        url => '/history/'.$page
     );
 
 </%init>
