@@ -1,0 +1,16 @@
+<%init>
+my $name = $m->dhandler_arg();
+my $page = Wifty::Model::Page->new();
+$page->load_by_cols( name => $name );
+my $viewer = Jifty->web->new_action( class => 'UpdatePage', record => $page );
+my $top = Jifty->web->navigation;
+$top->child(Show       => url =>  '/view/'.$page->name,, label => 'Show Page',  sort_order => 5);
+</%init>
+<&|/_elements/wrapper, title => 'Edit: '.$page->name &>
+<% Jifty->web->form->start %>
+<% Jifty->web->form->next_page( url => '/view/'.$page->name) %>
+<% $viewer->form_field('content') %>
+<% Jifty->web->form->submit( label => 'Save') %>
+<% Jifty->web->form->end%>
+<& /_elements/markup &>
+</&>

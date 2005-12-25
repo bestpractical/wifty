@@ -1,0 +1,13 @@
+<%init>
+my $page = $m->dhandler_arg;
+my $action = Jifty->web->new_action( class => 'CreatePage');
+</%init>
+<&|/_elements/wrapper, title => 'New page: '. $page&>
+<% Jifty->web->form->start %>
+<% Jifty->web->form->next_page( url => '/view/'.$page) %>
+<% $action->form_field('name', render_as => 'hidden', default_value => $page) %>
+<% $action->form_field('content')%>
+<% Jifty->web->form->submit( label => 'Save')%>
+<% Jifty->web->form->end %>
+<& /_elements/markup &>
+</&>

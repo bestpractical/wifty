@@ -1,0 +1,14 @@
+<%init>
+my $name = $m->dhandler_arg();
+my $page = Wifty::Model::Page->new();
+$page->load_by_cols( name => $name);
+unless ($page->id) {
+    Jifty->web->redirect( '/create/'.$name);
+    # XXX TODO: should this use goto or gosub or whatever we're calling it this week?
+}
+my $top = Jifty->web->navigation;
+$top->child(Edit       => url =>  '/edit/'.$page->name , sort_order => 5);
+</%init>
+<&|/_elements/wrapper, title => $page->name &>
+<% $page->wiki_content |n %>
+</&>

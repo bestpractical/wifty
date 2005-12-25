@@ -1,0 +1,15 @@
+framework:
+  LogConfig: etc/btdt.log4perl.conf
+  Database:
+    Driver: Pg
+    Host: localhost
+    User: postgres
+    Version: 0.0.8
+    Password: ''
+    RequireSSL: 0
+#  Mailer: IO
+#  MailerArgs:
+#    - %log/mail.log%
+  SiteConfig: etc/site_config.yml
+application: 
+  MaxWurbles: 9
