@@ -30,4 +30,24 @@ sub create {
 
 }
 
+=head2 current_user_can RIGHT
+
+We're using L<Jifty::RightsFrom> to pass off ACL decisions to this
+update's page.  But we need to make sure that page history entries aren't
+editable, except by superusers. So we override C<current_user_can>
+to give the arguments a brief massage before handing off to
+C<urrent_user_can> (which we inherit).
+
+=cut
+
+sub current_user_can {
+    my $self = shift;
+    my $right = shift;
+    
+    if ($right ne 'read' and not $self->current_user->is_superuser) {
+        return 0;
+    }
+    $self->SUPER::current_user_can($right, @_);
+
+}
 1;

@@ -115,18 +115,22 @@ sub _set {
     return ( $val, $msg );
 }
 
+
+=head2 current_user_can ACTION
+
+Let everybody create, read and update pages, but not delete the.
+
+=cut
+
 sub current_user_can {
     my $self = shift;
-    my ($type) = @_;
-
-    # TODO FIXME: For now..
-    return 1;
+    my $type = shift;
 
     # We probably want something like this eventually:
-    if ($type eq "read") {
+    if ($type =~ /(?:create|read|update)/i) {
         return 1;
     } else {
-        return $self->current_user->id;
+        return $self->SUPER::current_user_can($type, @_);
     }
 }
 
