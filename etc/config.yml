@@ -4,7 +4,7 @@ framework:
     Driver: Pg
     Host: localhost
     User: postgres
-    Version: 0.0.10
+    Version: 0.0.15
     Password: ''
     RequireSSL: 0
 #  Mailer: IO

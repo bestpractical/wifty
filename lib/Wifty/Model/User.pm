@@ -19,6 +19,11 @@ column email_confirmed =>
     type is 'boolean',
     since '0.0.10';
 
+column auth_token => 
+    type is 'text',
+    since '0.0.15';
+
+
 
 package Wifty::Model::User;
 use base qw/Wifty::Record/;
@@ -78,5 +83,25 @@ sub current_user_can {
     return $self->SUPER::current_user_can($right, %args);
 }
 
+=head2 auth_token
+
+Returns the user's unique authentication token. If the user 
+doesn't have one, sets one and returns it.
+
+=cut
+
+
+sub auth_token {
+    my $self = shift;
+    return undef unless ($self->current_user_can( read => 'auth_token'));
+    my $value = $self->_value('auth_token') ;
+    unless ($value) {
+            my $digest =Digest::MD5->new();
+            $digest->add(rand(100));
+            $self->__set('auth_token' => $digest->b64digest);
+            return $digest->b64digest;
+    }
+
+}
 
 1;

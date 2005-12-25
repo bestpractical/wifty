@@ -1,0 +1,14 @@
+<%method setup_actions>
+<%perl>
+Jifty->web->allow_actions( 'Wifty::Action::ConfirmEmail'); 
+Jifty->web->request->add_action(
+    moniker => 'confirm_email',
+    class   => 'Wifty::Action::ConfirmEmail',
+);
+Jifty->web->request->add_action(
+    moniker   => 'next_page',
+    class     => 'Jifty::Action::Redirect',
+    arguments => {url => "/"},
+);
+</%perl>
+</%method>
