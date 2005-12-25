@@ -1,10 +1,13 @@
 framework:
-  AdminMode: 1
+  AdminMode: 0
+  Web:
+    Port: 80
+    BaseURL: http://jifty.org
   Database:
     Driver: Pg
     Host: localhost
     User: postgres
-    Version: 0.0.18
+    Version: 0.0.19
     Password: ''
     RequireSSL: 0
 #  Mailer: IO

@@ -21,7 +21,7 @@ column password =>,
 column email_confirmed =>
     label is 'Email address confirmed?',
     type is 'boolean',
-    since '0.0.10';
+    since '0.0.19';
 
 column auth_token => 
     type is 'text',
