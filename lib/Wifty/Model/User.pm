@@ -43,7 +43,6 @@ Returns true if and only if the current user's password matches STRING
 sub password_is {
     my $self = shift;
     my $string = shift;
-    warn "Checking $string";
     return 1 if ($self->_value('password') eq $string);
     return 0;
 }
@@ -58,4 +57,21 @@ sub password {
     return undef;
 
 }
+
+
+sub current_user_can {
+    my $self = shift;
+    my $right = shift;
+    my %args = (@_);
+
+    if ($right eq 'read')  {
+
+    } elsif ($right eq 'write') {
+
+    }
+
+    return $self->SUPER::current_user_can($right, %args);
+}
+
+
 1;
