@@ -1,4 +1,5 @@
 framework:
+  AdminMode: 0
   LogConfig: etc/btdt.log4perl.conf
   Database:
     Driver: Pg
