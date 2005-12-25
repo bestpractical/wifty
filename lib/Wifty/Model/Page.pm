@@ -56,7 +56,7 @@ sub wiki_content {
     $scrubber->allow(
         qw[A B U P BR I HR BR SMALL EM FONT SPAN DIV UL OL LI DL DT DD]);
     $scrubber->comment(0);
-    return ( $scrubber->scrub( markdown( $content ) ) );
+    return ( $scrubber->scrub( markdown( $content || '') ) );
 
 }
 
@@ -113,6 +113,21 @@ sub _set {
         value  => $now->ymd . " " . $now->hms
     );
     return ( $val, $msg );
+}
+
+sub current_user_can {
+    my $self = shift;
+    my ($type) = @_;
+
+    # TODO FIXME: For now..
+    return 1;
+
+    # We probably want something like this eventually:
+    if ($type eq "read") {
+        return 1;
+    } else {
+        return $self->current_user->id;
+    }
 }
 
 1;

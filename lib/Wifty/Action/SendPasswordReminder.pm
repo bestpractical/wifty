@@ -61,8 +61,8 @@ sub validate_address {
     my $self  = shift;
     my $email = shift;
 
-        return $self->validation_error(address => "That doesn't look like an email address." )
-    unless ( $email =~ /\S\@\S/ ) 
+    return $self->validation_error(address => "That doesn't look like an email address." )
+      unless ( $email =~ /\S\@\S/ );
 
     $self->user_object(Wifty::Model::User->new(current_user => Wifty::CurrentUser->superuser));
     $self->user_object->load_by_cols( email => $email );
