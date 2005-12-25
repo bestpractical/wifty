@@ -16,16 +16,25 @@ column updated =>
     since '0.0.6';
 
 
-#column revisions => refers_to Wifty::Model::Revision by 'page';
+column revisions =>
+    refers_to Wifty::Model::RevisionCollection by 'page';
 
 package Wifty::Model::Page;
 use base qw/Wifty::Record/;
+use Wifty::Model::RevisionCollection;
 use Text::Markdown;
 use HTML::Scrubber;
 
+=head2 wiki_content [CONTENT]
+
+Wikify either the content of a scalar passed in as an argument or
+this page's "content" attribute.
+
+=cut
+
 sub wiki_content {
     my $self     = shift;
-    my $content  = $self->content();
+    my $content  = shift ||$self->content();
     my $scrubber = HTML::Scrubber->new();
 
     $scrubber->default(
@@ -46,7 +55,7 @@ sub wiki_content {
     $scrubber->allow(
         qw[A B U P BR I HR BR SMALL EM FONT SPAN DIV UL OL LI DL DT DD]);
     $scrubber->comment(0);
-    return ( markdown( $scrubber->scrub( $self->content ) ) );
+    return ( markdown( $scrubber->scrub( $content ) ) );
 
 }
 

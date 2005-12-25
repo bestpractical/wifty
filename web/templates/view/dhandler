@@ -1,13 +1,28 @@
 <%init>
-my $name = $m->dhandler_arg();
+my $arg = $m->dhandler_arg();
+my ($name,$rev);
+if ($arg =~ qr{^(.*?)/?(\d?)$}) {
+    $name = $1;
+    $rev = $2;
+}
 my $page = Wifty::Model::Page->new();
 $page->load_by_cols( name => $name );
+
+my $revision = Wifty::Model::Revision->new();
+if ($rev) {
+    $revision->load_by_cols( page => $page->id, id => $rev);
+}
+
 unless ( $page->id ) {
     Jifty->web->redirect( '/create/' . $name );
 }
-my $top = Jifty->web->navigation;
-$top->child( Edit => url => '/edit/' . $page->name, sort_order => 5 );
+
+$m->comp('/_elements/page_nav', page => $page->name, rev => $rev);
 </%init>
 <&|/_elements/wrapper, title => $page->name &>
+% if ($revision->id) {
+<% $page->wiki_content($revision->content) |n%>
+% } else {
 <% $page->wiki_content |n %>
+% }
 </&>

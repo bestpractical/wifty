@@ -1,20 +1,30 @@
 <%init>
-my $name = $m->dhandler_arg();
+my $arg = $m->dhandler_arg();
+my ($name,$rev);
+if ($arg =~ qr{^(.*?)/?(\d?)$}) {
+    $name = $1;
+    $rev = $2;
+}
 my $page = Wifty::Model::Page->new();
 $page->load_by_cols( name => $name );
+
+my $revision = Wifty::Model::Revision->new();
+if ($rev) {
+$revision->load_by_cols( page  => $page->id, id=> $rev);
+}
+
 my $viewer = Jifty->web->new_action( class => 'UpdatePage', record => $page );
-my $top = Jifty->web->navigation;
-$top->child(
-    Show    =>
-        url => '/view/' . $page->name,
-        label      => 'Show Page',
-        sort_order => 5
-);
+$m->comp('/_elements/page_nav', page => $page->name, rev => $rev);
+
 </%init>
 <&|/_elements/wrapper, title => 'Edit: '.$page->name &>
 <% Jifty->web->form->start %>
 <% Jifty->web->form->next_page( url => '/view/'.$page->name) %>
+% if ($revision->id) {
+<% $viewer->form_field('content', default_value => $revision->content )%>
+% } else { 
 <% $viewer->form_field('content') %>
+% }
 <% Jifty->web->form->submit( label => 'Save') %>
 <% Jifty->web->form->end %>
 <& /_elements/markup &>

@@ -1,0 +1,30 @@
+<%init>
+my $subpath =  $page . ($rev ? "/rev/$rev" : '');
+my $top = Jifty->web->navigation;
+my $this = $top->child( 
+    This => 
+        url => "/view/".$subpath,
+        label => $page,
+        sort_order => 5
+);
+
+$this->child(
+    View =>
+        url => '/view/'.$subpath
+);
+
+$this->child(
+    Edit =>
+        url => '/edit/'.$subpath
+);
+
+$this->child(
+    History =>
+        url => '/history/'.$subpath
+    );
+
+</%init>
+<%args>
+$page => 'HomePage'
+$rev => undef
+</%args>
