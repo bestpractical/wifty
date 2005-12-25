@@ -24,48 +24,9 @@ a {
  display: none;
 }
 
-div#menu {
- background: green;
-
-}
-
-div#sidebar {
- float: left;
-
-
-}
-
 div#content {
     background: #ffffff;
    padding: 2em;
-}
-
-
-ul.menu {
-    display: block;
-    border-bottom: 2px solid black;
-    padding-bottom: 4px;
-    width: 100%;
-    margin-left: 0px;
-    margin-right: 0px;
-
-}
-
-ul.menu li {
-
-    background: #770077;
-    color:#ffffff;
-    text-align: center;
-    display: inline;
-    padding: 0.4em 0.4em 4px 0.4em;
-    border-bottom: 2px solid black;
-;
-     
-}
-
-ul.menu li a {
- color: #ffffff;
-
 }
 
 div#salutation {
@@ -80,16 +41,10 @@ textarea.content {
   padding: 5px;
 }
 
-label {
-  position: absolute;
-  top: 3.4em;
-  left: 1em;
-  font-size: 2em;
-}
 
 input[type=submit] {
     border: 1px solid black;
-    font-size: 2em;
+    font-size: 1.5em;
     margin: 5px;
         
 }
