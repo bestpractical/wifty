@@ -56,7 +56,7 @@ sub wiki_content {
     $scrubber->allow(
         qw[A B U P BR I HR BR SMALL EM FONT SPAN DIV UL OL LI DL DT DD]);
     $scrubber->comment(0);
-    return ( $scrubber->scrub( markdown( $content || '') ) );
+    return ( markdown( $scrubber->scrub( $content || '') ) );
 
 }
 
