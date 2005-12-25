@@ -8,20 +8,11 @@ my $this = $top->child(
         sort_order => 5
 );
 
-$this->child(
-    View =>
-        url => '/view/'.$subpath
-);
 
-$this->child(
-    Edit =>
-        url => '/edit/'.$subpath
-);
-
-$this->child(
-    History =>
-        url => '/history/'.$page
-    );
+$this->child( View => url => '/view/'.$subpath);
+$this->child( Edit => url => '/edit/'.$subpath);
+$this->child( History => url => '/history/'.$page);
+$this->child( Latest => url => '/view/'.$page) if ($rev);
 
 </%init>
 <%args>
