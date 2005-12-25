@@ -13,7 +13,7 @@ column created =>
 
 package Wifty::Model::Revision;
 use base qw/Wifty::Record/;
-
+use Jifty::RightsFrom column => 'page';
 use DateTime;
 
 
