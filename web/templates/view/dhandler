@@ -19,7 +19,7 @@ unless ( $page->id ) {
 
 $m->comp('/_elements/page_nav', page => $page->name, rev => $rev);
 </%init>
-<&|/_elements/wrapper, title => $page->name . ($revision->id ? " as of ".$revision->date : '') &>
+<&|/_elements/wrapper, title => $page->name . ($revision->id ? " as of ".$revision->created : '') &>
 % if ($revision->id) {
 <% $page->wiki_content($revision->content) |n%>
 % } else {

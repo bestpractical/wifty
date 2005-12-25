@@ -17,7 +17,7 @@ my $viewer = Jifty->web->new_action( class => 'UpdatePage', record => $page );
 $m->comp('/_elements/page_nav', page => $page->name, rev => $rev);
 
 </%init>
-<&|/_elements/wrapper, title => 'Edit: '.$page->name . ($revision->id ? " as of ".$revision->date : '')  &>
+<&|/_elements/wrapper, title => 'Edit: '.$page->name . ($revision->id ? " as of ".$revision->created : '')  &>
 <% Jifty->web->form->start %>
 <% Jifty->web->form->next_page( url => '/view/'.$page->name) %>
 % if ($revision->id) {
