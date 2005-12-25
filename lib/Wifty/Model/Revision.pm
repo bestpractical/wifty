@@ -2,7 +2,7 @@ package Wifty::Model::Revision::Schema;
 use Jifty::DBI::Schema;
 
 column page  => 
-    refers_to Wifty::Model::Revision;
+    refers_to Wifty::Model::Page;
 
 column content =>
     type is 'text',
