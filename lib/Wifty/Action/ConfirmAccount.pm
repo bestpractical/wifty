@@ -11,7 +11,7 @@ This is the link in a user's email to confirm that their email
 email is really theirs.  It is not really meant to be rendered on any
 web page, but is used by the confirmation notification.
 
-Note that the use of C<insecure_url_auth_token> here is insecure and wrong!
+Note that the use of C<auth_token> here is insecure and wrong!
 (XXX TODO FIXME) If an attacker knew the token calculation algorithm (including
 the non-random salt), they could easily do email confirmation without needed
 to actually have access to the email account, since the algorithm only depends on
