@@ -3,24 +3,29 @@ use Jifty::DBI::Schema;
 
 column name => 
     type is 'text',
+    label is 'Name',
     is mandatory,
     is distinct;
 
 column email =>
     type is 'text',
+    label is 'Email address',
     is mandatory,
     is distinct;
 
 column password =>,
     type is 'text',
+    label is 'Password',
     render_as 'password';
 
 column email_confirmed =>
+    label is 'Email address confirmed?',
     type is 'boolean',
     since '0.0.10';
 
 column auth_token => 
     type is 'text',
+    render_as 'Password',
     since '0.0.15';
 
 

@@ -3,18 +3,23 @@ use Jifty::DBI::Schema;
 
 column name => 
     type is 'text',
+    label is 'Page name',
     is mandatory,
     is distinct;
 
 column content =>
     type is 'text',
-    label is 'Page content',
+    label is 'Content',
     render_as 'textarea';
 
 column updated =>
     type is 'timestamp',
+    label is 'Last updated',
     since '0.0.6';
 
+column updated_by =>
+    refers_to Wifty::Model::User,
+    since '0.0.16';
 
 column revisions =>
     refers_to Wifty::Model::RevisionCollection by 'page';
@@ -65,6 +70,7 @@ sub create {
     my %args = (@_);
     my $now  = DateTime->now();
     $args{'updated'} = $now->ymd . " " . $now->hms;
+    $args{'updated_by'} = ( $self->current_user? $self->current_user->user_object : undef );
     my ($id) = $self->SUPER::create(%args);
     if ( $self->id ) {
         $self->_add_revision(%args);
@@ -91,7 +97,8 @@ sub _add_revision {
     my $rev = Wifty::Model::Revision->new( current_user => Wifty::CurrentUser->superuser);
     $rev->create(
         page    => $self->id,
-        content => $args{'content'}
+        content => $args{'content'},
+        by      => $args{'updated_by'}
     );
 
 }
@@ -100,7 +107,9 @@ sub set_content {
     my $self    = shift;
     my $content = shift;
     my ( $val, $msg ) = $self->SUPER::set_content($content);
-    $self->_add_revision( content => $content );
+    $self->_add_revision( content => $content,
+                    updated_by =>( $self->current_user? $self->current_user->user_object : undef )
+                );
     return ( $val, $msg );
 }
 
@@ -112,6 +121,14 @@ sub _set {
         column => 'updated',
         value  => $now->ymd . " " . $now->hms
     );
+
+    $self->SUPER::_set(
+        column => 'updated_by',
+        value  => 
+                    ( $self->current_user? $self->current_user->user_object : undef )
+        
+    );
+
     return ( $val, $msg );
 }
 

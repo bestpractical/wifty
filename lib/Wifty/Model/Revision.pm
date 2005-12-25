@@ -1,21 +1,21 @@
 package Wifty::Model::Revision::Schema;
 use Jifty::DBI::Schema;
 
-column page  => 
-    refers_to Wifty::Model::Page;
+column page  => refers_to Wifty::Model::Page;
 
-column content =>
-    type is 'text',
-    render_as 'textarea';
+column content => type is 'text', render_as 'textarea';
 
-column created => 
-    type is 'timestamp';
+column created => type is 'timestamp';
+
+column by => refers_to Wifty::Model::User, since '0.0.18';
+
 
 package Wifty::Model::Revision;
 use base qw/Wifty::Record/;
 use Jifty::RightsFrom column => 'page';
 use DateTime;
-
+use Wifty::Model::User;
+use Wifty::Model::Page;
 
 sub since { '0.0.5' }
 
