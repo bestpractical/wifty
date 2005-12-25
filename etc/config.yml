@@ -1,6 +1,5 @@
 framework:
   AdminMode: 1
-  LogConfig: etc/btdt.log4perl.conf
   Database:
     Driver: Pg
     Host: localhost
