@@ -8,7 +8,7 @@ A basic test harness for the User model.
 
 =cut
 
-use Jifty::Test tests => 11;
+use Jifty::Test tests => 12;
 
 # Make sure we can load the model
 use_ok('Wifty::Model::User');
@@ -23,6 +23,8 @@ my ($id) = $o->create(email => 'an@email', name => 'name');
 ok($id, "User create returned success");
 ok($o->id, "New User has valid id set");
 is($o->id, $id, "Create returned the right id");
+
+ok($o->auth_token, "We have an auth token! ".$o->auth_token);
 
 # And another
 $o->create(email => 'some@mail', name => 'another');

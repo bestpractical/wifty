@@ -73,19 +73,39 @@ sub password {
 
 }
 
+=head2 current_user_can
+
+Allows the current user to see all their own attributes and
+everyone else to see their username.
+
+Allows the current user to update any of their own attributes
+except whether or not their email has been confirmed.
+
+Passes everything else off to the superclass.
+
+=cut
+
 
 sub current_user_can {
-    my $self = shift;
+    my $self  = shift;
     my $right = shift;
-    my %args = (@_);
-    return(1);
-    if ($right eq 'read')  {
+    my %args  = (@_);
+    Carp::confess if ($right eq 'read' and not $args{'column'});
+    if (    $right eq 'read'
+        and $self->id == $self->current_user->id )
+    {
+        return 1;
+    } elsif ( $right eq 'read' and $args{'column'} eq 'name' ) {
+        return (1);
 
-    } elsif ($right eq 'update') {
-
+    } elsif ( $right eq 'update'
+        and $self->id == $self->current_user->id
+        and $args{'column'} ne 'email_confirmed' )
+    {
+        return (1);
     }
 
-    return $self->SUPER::current_user_can($right, %args);
+    return $self->SUPER::current_user_can( $right, %args );
 }
 
 =head2 auth_token
@@ -98,14 +118,14 @@ doesn't have one, sets one and returns it.
 
 sub auth_token {
     my $self = shift;
-    return undef unless ($self->current_user_can( read => 'auth_token'));
+    return undef unless ($self->current_user_can( read => column =>  'auth_token'));
     my $value = $self->_value('auth_token') ;
     unless ($value) {
             my $digest =Digest::MD5->new();
             $digest->add(rand(100));
-            $self->__set('auth_token' => $digest->b64digest);
-            return $digest->b64digest;
+            $self->__set(column => 'auth_token', value => $digest->b64digest);
     }
+    return $self->_value('auth_token') ;
 
 }
 

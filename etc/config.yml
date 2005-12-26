@@ -1,5 +1,6 @@
 framework:
   AdminMode: 0
+  ApplicationName: Wifty
   Web:
     Port: 80
     BaseURL: http://jifty.org
