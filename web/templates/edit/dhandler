@@ -1,22 +1,9 @@
-<%init>
-my $arg = $m->dhandler_arg();
-my ($name,$rev);
-if ($arg =~ qr{^(.*?)/?(\d*?)$}) {
-    $name = $1;
-    $rev = $2;
-}
-my $page = Wifty::Model::Page->new();
-$page->load_by_cols( name => $name );
-
-my $revision = Wifty::Model::Revision->new();
-if ($rev) {
-$revision->load_by_cols( page  => $page->id, id=> $rev);
-}
-
-my $viewer = Jifty->web->new_action( class => 'UpdatePage', record => $page );
-$m->comp('/_elements/page_nav', page => $page->name, rev => $rev);
-
-</%init>
+<%args>
+$page
+$revision
+$viewer 
+</%args>
+<&/_elements/page_nav, page => $page->name, rev => $revision->id &>
 <&|/_elements/wrapper, title => 'Edit: '.$page->name . ($revision->id ? " as of ".$revision->created : '')  &>
 <% Jifty->web->form->start %>
 <% Jifty->web->form->next_page( url => '/view/'.$page->name) %>

@@ -8,6 +8,6 @@
 <& /_elements/markup &>
 </&>
 <%args>
-$action
-$page
+$action => undef
+$page => undef
 </%args>

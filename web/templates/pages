@@ -1,7 +1,6 @@
-<%init>
-my $pages = Wifty::Model::PageCollection->new();
-$pages->unlimit();
-</%init>
+<%args>
+$pages
+</%args>
 <&|/_elements/wrapper, title => 'These are the pages on your wiki!' &>
 <ul id="pagelist">
 % while (my $page = $pages->next) {

@@ -1,12 +1,7 @@
-<%init> 
-if (Jifty->web->current_user->id) {
-    $m->comp('/_elements/logged_in_already');
-    return();
-}
-my $action = Jifty->web->new_action(class => 'Signup', moniker => 'signupbox' );
-
-my $next = Jifty->web->request->continuation || Jifty::Continuation->new(request => Jifty::Request->new(path => "/"));
-</%init>
+<%args>
+$action
+$next
+</%args>
 <&|/_elements/wrapper, title => 'Signup' &>
 <h2>Signup</h2>
 <% Jifty->web->form->start(call => $next, name => "signupbox") %>

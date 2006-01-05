@@ -1,12 +1,3 @@
 <&| /_elements/wrapper, title => "Logged out" &>
 <p>Ok, you're now logged out. Have a good day.</p>
 </&>
-
-
-<%method setup_actions>
-<%perl>
-    Jifty->web->request->add_action( moniker => 'logout',
-        class => 'Wifty::Action::Logout'
-    );
-</%perl>
-</%method>

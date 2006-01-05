@@ -1,11 +1,4 @@
-<%init> 
-my $action = Jifty->web->new_action(class => 'Login', moniker => 'loginbox' );
-
-my $next = Jifty->web->request->continuation || Jifty::Continuation->new(request => Jifty::Request->new(path => "/"));
-</%init>
 <&|/_elements/wrapper, title => 'Login' &>
-
-
 
 % if (not Jifty->web->current_user->id) {
 <h2>Login</h2>
@@ -18,8 +11,6 @@ my $next = Jifty->web->request->continuation || Jifty::Continuation->new(request
 <% Jifty->web->tangent( label => q{Don't have an account?}, url => '/signup' )%>
 % }
 % else {
-
-You're alrady logged in.
-
-%}
+You're already logged in.
+% }
 </&>

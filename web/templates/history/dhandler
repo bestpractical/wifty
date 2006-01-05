@@ -1,13 +1,8 @@
-<%init>
-my $name = $m->dhandler_arg();
-my $page = Wifty::Model::Page->new();
-$page->load_by_cols( name => $name );
-Jifty->web->redirect( '/create/' . $name ) unless ( $page->id );
-
-my $revisions = $page->revisions;
-$revisions->order_by( column => 'id', order => 'desc');
-$m->comp('/_elements/page_nav', page => $page->name);
-</%init>
+<%args>
+$page
+$revisions
+</%args>
+<& /_elements/page_nav, page => $page->name &>
 <&|/_elements/wrapper, title => $revisions->count ." revisions of " .$page->name &>
 <ul>
 % while (my $rev = $revisions->next) {
