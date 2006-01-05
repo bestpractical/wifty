@@ -13,7 +13,6 @@ under '/create/*', run {
 
 under ['view/*', 'edit/*'], run {
     my ( $name, $rev );
-    warn "hey";
     if ( $1 =~ qr{^(.*?)/?(\d*?)$} ) {
         $name = $1;
         $rev  = $2;
