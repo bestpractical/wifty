@@ -1,7 +1,3 @@
-<%init>
-my $page = $m->dhandler_arg;
-my $action = Jifty->web->new_action( class => 'CreatePage');
-</%init>
 <&|/_elements/wrapper, title => 'New page: '. $page&>
 <% Jifty->web->form->start %>
 <% Jifty->web->form->next_page( url => '/view/'.$page) %>
@@ -11,3 +7,7 @@ my $action = Jifty->web->new_action( class => 'CreatePage');
 <% Jifty->web->form->end %>
 <& /_elements/markup &>
 </&>
+<%args>
+$action
+$page
+</%args>
