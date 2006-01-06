@@ -1,6 +1,6 @@
 <%init>
 $r->content_type('text/html; charset=utf-8');
-Jifty->web->handle_request();
+#Jifty->web->handle_request();
 
 if ($m->base_comp->path =~ m|/_elements/|) {
     # Requesting an internal component by hand -- naughty
@@ -17,6 +17,7 @@ return;
 </%init>
 <%def .setup_actions>
 <%init>
+# XXX TODO: move all this into the dispatcher
 Jifty->web->allow_actions(qr/.*/);
 # this method turns around and calls the setup_actions method 
 # it's called by Jifty::Web->setup_page_actions.

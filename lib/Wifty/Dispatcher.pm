@@ -3,14 +3,16 @@ use Jifty::Dispatcher -base;
 
 on '/', redirect( '/view/HomePage');
 
-under '/create/*', run {
+on '/create/*', run {
      set page => $1;
      set action => Jifty->web->new_action( class => 'CreatePage' );
+     show("/create");
 };
 
 
 on qr{(view|edit)/(.*)}, run {
     my ( $name, $rev );
+    my $page_name = $1;
     if ( $2 =~ qr{^(.*?)/?(\d*?)$} ) {
         $name = $1;
         $rev  = $2;
@@ -23,7 +25,7 @@ on qr{(view|edit)/(.*)}, run {
     set page => $page;
     set revision => $revision;
     set viewer => Jifty->web->new_action( class => 'UpdatePage', record => $page );
-    show("/view");
+    show("/$page_name");
 };
 
 on 'history/*', run {
@@ -37,7 +39,7 @@ on 'history/*', run {
 
     set page => $page;
     set revisions => $revisions;
-
+    show('/history');
 };
 
 
@@ -79,7 +81,7 @@ on 'login', run {
 
 };
 
-on 'logout', run {
+before 'logout', run {
     Jifty->web->request->add_action(
         moniker => 'logout',
         class   => 'Wifty::Action::Logout'
