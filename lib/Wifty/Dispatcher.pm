@@ -1,9 +1,7 @@
 package Wifty::Dispatcher;
 use Jifty::Dispatcher -base;
 
-on '/', run {
-    redirect( '/view/HomePage');
-};
+on '/', redirect( '/view/HomePage');
 
 under '/create/*', run {
      set page => $1;
@@ -11,9 +9,9 @@ under '/create/*', run {
 };
 
 
-under ['view/*', 'edit/*'], run {
+on qr{(view|edit)/(.*)}, run {
     my ( $name, $rev );
-    if ( $1 =~ qr{^(.*?)/?(\d*?)$} ) {
+    if ( $2 =~ qr{^(.*?)/?(\d*?)$} ) {
         $name = $1;
         $rev  = $2;
     }
@@ -25,9 +23,10 @@ under ['view/*', 'edit/*'], run {
     set page => $page;
     set revision => $revision;
     set viewer => Jifty->web->new_action( class => 'UpdatePage', record => $page );
+    show("/view");
 };
 
-under 'history/*', run {
+on 'history/*', run {
     my $name = $1;
     my $page = Wifty::Model::Page->new();
     $page->load_by_cols( name => $name );
