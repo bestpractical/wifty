@@ -1,13 +1,11 @@
 framework:
   AdminMode: 0
   ApplicationName: Wifty
-  #LogConfig: etc/log4perl.conf
 
   Web:
     Port: 80
     BaseURL: http://jifty.org
   Database:
-  #  Driver: Pg
     Driver: SQLite
     Host: localhost
     User: postgres
