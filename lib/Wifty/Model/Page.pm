@@ -98,7 +98,7 @@ sub _add_revision {
     $rev->create(
         page    => $self->id,
         content => $args{'content'},
-        by      => $args{'updated_by'}
+        # by      => $args{'updated_by'}
     );
 
 }

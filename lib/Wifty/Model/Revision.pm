@@ -7,7 +7,7 @@ column content => type is 'text', render_as 'textarea';
 
 column created => type is 'timestamp';
 
-column by => refers_to Wifty::Model::User, since '0.0.18';
+#column by => refers_to Wifty::Model::User, since '0.0.18';
 
 
 package Wifty::Model::Revision;
