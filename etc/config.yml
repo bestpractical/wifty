@@ -2,9 +2,6 @@ framework:
   AdminMode: 0
   ApplicationName: Wifty
 
-  Web:
-    Port: 80
-    BaseURL: http://jifty.org
   Database:
     Driver: SQLite
     Host: localhost
@@ -16,5 +13,3 @@ framework:
 #  MailerArgs:
 #    - %log/mail.log%
   SiteConfig: etc/site_config.yml
-application: 
-  MaxWurbles: 9

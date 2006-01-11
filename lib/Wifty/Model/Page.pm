@@ -40,7 +40,7 @@ this page's "content" attribute.
 
 sub wiki_content {
     my $self     = shift;
-    my $content  = shift ||$self->content();
+    my $content  = shift || $self->content() || '';
     my $scrubber = HTML::Scrubber->new();
 
     $scrubber->default(
@@ -48,7 +48,7 @@ sub wiki_content {
         {   '*'   => 0,
             id    => 1,
             class => 1,
-            href  => qr{^(?:http:|ftp:|https:|/)}i,
+            href  => qr{^(?:(?:\w+$)|http:|ftp:|https:|/)}i,
 
             # Match http, ftp and relative urls
             face   => 1,
@@ -59,9 +59,12 @@ sub wiki_content {
 
     $scrubber->deny(qw[*]);
     $scrubber->allow(
-        qw[A B U P BR I HR BR SMALL EM FONT SPAN DIV UL OL LI DL DT DD]);
+        qw[H1 H2 H3 H4 H5 A STRONG EM CODE PRE B U P BR I HR BR SPAN DIV UL OL LI DL DT DD]);
     $scrubber->comment(0);
-    return ( markdown( $scrubber->scrub( $content || '') ) );
+
+    $content = markdown( $content );
+    $content = $scrubber->scrub( $content );
+    return ( $content );
 
 }
 
