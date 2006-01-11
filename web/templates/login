@@ -1,3 +1,7 @@
+<%args>
+$action => undef
+$next => undef
+</%args>
 <&|/_elements/wrapper, title => 'Login' &>
 
 % if (not Jifty->web->current_user->id) {
