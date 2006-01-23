@@ -1,15 +1,24 @@
 package Wifty::Dispatcher;
 use Jifty::Dispatcher -base;
 
-on '/', redirect( '/view/HomePage');
+# Generic restrictions
+under '/', run {
+    Jifty->web->deny_actions('Wifty::ConfirmEmail');
+};
 
+# Default page
+on '/', run {
+    redirect( '/view/HomePage');
+};
+
+# Create a page
 on '/create/*', run {
      set page => $1;
      set action => Jifty->web->new_action( class => 'CreatePage' );
      show("/create");
 };
 
-
+# View or edit a page
 on qr{(view|edit)/(.*)}, run {
     my ( $name, $rev );
     my $page_name = $1;
@@ -28,6 +37,7 @@ on qr{(view|edit)/(.*)}, run {
     show("/$page_name");
 };
 
+# View page history
 on 'history/*', run {
     my $name = $1;
     my $page = Wifty::Model::Page->new();
@@ -42,13 +52,14 @@ on 'history/*', run {
     show('/history');
 };
 
-
+# List pages
 on 'pages', run {
     my $pages = Wifty::Model::PageCollection->new();
     $pages->unlimit();
     set pages => $pages;
 };
 
+# Show recent edits
 on 'recent', run {
     my $then = DateTime->from_epoch( epoch => ( time - ( 86400 * 7 ) ) );
     my $pages = Wifty::Model::PageCollection->new();
@@ -61,6 +72,7 @@ on 'recent', run {
     set pages => $pages;
 };
 
+# Sign up for an account
 on 'signup', run {
     redirect('/') if ( Jifty->web->current_user->id );
     set 'action' =>
@@ -72,6 +84,7 @@ on 'signup', run {
 
 };
 
+# Login
 on 'login', run {
     set 'action' =>
         Jifty->web->new_action( class => 'Login', moniker => 'loginbox' );
@@ -81,6 +94,7 @@ on 'login', run {
 
 };
 
+# Log out
 before 'logout', run {
     Jifty->web->request->add_action(
         moniker => 'logout',
