@@ -19,7 +19,7 @@ on '/create/*', run {
 };
 
 # View or edit a page
-on qr{(view|edit)/(.*)}, run {
+on qr{^/(view|edit)/(.*)}, run {
     my ( $name, $rev );
     my $page_name = $1;
     if ( $2 =~ qr{^(.*?)/?(\d*?)$} ) {
