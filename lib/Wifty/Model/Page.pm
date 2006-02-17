@@ -62,7 +62,7 @@ sub wiki_content {
         qw[H1 H2 H3 H4 H5 A STRONG EM CODE PRE B U P BR I HR BR SPAN DIV UL OL LI DL DT DD]);
     $scrubber->comment(0);
 
-    $content = markdown( $content );
+    $content = Text::Markdown::markdown( $content );
     $content = $scrubber->scrub( $content );
     return ( $content );
 
