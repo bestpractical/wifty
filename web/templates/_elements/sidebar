@@ -7,28 +7,5 @@ Hiya, <span class="user"><%Jifty->web->current_user->user_object->name%></span>.
 % }
 </div>
 <div id="navigation">
-<ul id="menu">
-<%perl>
-
-
-$m->comp( ".menu", item => $_ )
-    for ( sort { $a->sort_order <=> $b->sort_order }
-    Jifty->web->navigation->children );
-</%perl>
-</ul>
+<& /_elements/menu &>
 </div>
-<%def .menu>
-<%args>
-$item
-</%args>
-  <li <%  $item->active ? 'class="active"' : '' |n %>><% 
-    Jifty->web->link(
-        url   => $item->url,
-        label => $item->label,
-    ) %></li>
-% if (my @kids = $item->children) {
-<ul id="submenu">
-% $m->comp(".menu", item => $_) for @kids;
-</ul>
-% }
-</%def>
