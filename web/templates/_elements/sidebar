@@ -1,7 +1,7 @@
 <div id="salutation">
 % if (Jifty->web->current_user->id and Jifty->web->current_user->user_object) {
 Hiya, <span class="user"><%Jifty->web->current_user->user_object->name%></span>.<br />
-(<% Jifty->web->tangent( label => q{Logout}, url => '/logout' )%>)
+(<% Jifty->web->link( label => q{Logout}, url => '/logout' )%>)
 % }  else {
 <% Jifty->web->tangent( label => q{You're not currently signed in.}, url => '/login' )%>
 % }
