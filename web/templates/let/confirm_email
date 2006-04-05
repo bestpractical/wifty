@@ -1,5 +1,5 @@
 <%init>
-Jifty->web->allow_actions( 'Wifty::Action::ConfirmEmail'); 
+Jifty->api->allow( 'ConfirmEmail'); 
 Jifty->web->new_action(
     moniker => 'confirm_email',
     class   => 'Wifty::Action::ConfirmEmail',

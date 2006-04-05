@@ -3,7 +3,7 @@ use Jifty::Dispatcher -base;
 
 # Generic restrictions
 under '/', run {
-    Jifty->web->deny_actions('Wifty::ConfirmEmail');
+    Jifty->api->deny('ConfirmEmail');
 };
 
 # Default page
@@ -104,7 +104,7 @@ before 'logout', run {
 
 ## LetMes
 before qr'^/let/(.*)' => run {
-    Jifty->web->deny_actions(qr/.*/);
+    Jifty->api->deny(qr/^Wifty::Dispatcher/);
 
     my $let_me = Jifty::LetMe->new();
     $let_me->from_token($1);
