@@ -13,3 +13,7 @@ framework:
 #  MailerArgs:
 #    - %log/mail.log%
   SiteConfig: etc/site_config.yml
+
+  Web:
+    StaticRoot: share/web/static
+    TemplateRoot: share/web/templates
