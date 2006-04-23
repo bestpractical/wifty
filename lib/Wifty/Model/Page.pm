@@ -109,7 +109,7 @@ sub _add_revision {
 sub set_content {
     my $self    = shift;
     my $content = shift;
-    my ( $val, $msg ) = $self->SUPER::set_content($content);
+    my ( $val, $msg ) = $self->_set(column => 'content', value => $content);
     $self->_add_revision( content => $content,
                     updated_by =>( $self->current_user? $self->current_user->user_object : undef )
                 );
