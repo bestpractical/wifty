@@ -61,6 +61,8 @@ div#syntax {
     right: 2em;
 }
 
-
-
-
+.file span { display: block; clear: both; }
+.file .fileheader, .file .hunkheader {color: #888; }
+.file .hunk .ctx { background: #eee;}
+.file .hunk ins { background: #dfd; text-decoration: none; display: block; }
+.file .hunk del { background: #fdd; text-decoration: none; display: block; }

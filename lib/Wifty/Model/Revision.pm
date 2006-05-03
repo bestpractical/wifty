@@ -30,6 +30,50 @@ sub create {
 
 }
 
+sub previous {
+    my $self = shift;
+    return undef unless $self->id;
+
+    my $revisions = Wifty::Model::RevisionCollection->new;
+    $revisions->limit(
+        column         => 'page',
+        value          => $self->page->id,
+        quote_value    => 0,
+        case_sensitive => 1
+    );
+    $revisions->limit(
+        column         => 'id',
+        operator       => '<',
+        value          => $self->id,
+        quote_value    => 0,
+        case_sensitive => 1
+    );
+    $revisions->order_by( { column => 'id' } );
+    return $revisions->last;
+}
+
+sub next {
+    my $self = shift;
+    return undef unless $self->id;
+
+    my $revisions = Wifty::Model::RevisionCollection->new;
+    $revisions->limit(
+        column         => 'page',
+        value          => $self->page->id,
+        quote_value    => 0,
+        case_sensitive => 1
+    );
+    $revisions->limit(
+        column         => 'id',
+        operator       => '>',
+        value          => $self->id,
+        quote_value    => 0,
+        case_sensitive => 1
+    );
+    $revisions->order_by( { column => 'id' } );
+    return $revisions->first;
+}
+
 =head2 current_user_can RIGHT
 
 We're using L<Jifty::RightsFrom> to pass off ACL decisions to this

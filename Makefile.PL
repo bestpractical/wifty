@@ -4,4 +4,5 @@ version('0.01');
 requires('Jifty');
 requires('Text::Markdown');
 requires('HTML::Scrubber');
+requires('Text::Diff::HTML');
 WriteAll;

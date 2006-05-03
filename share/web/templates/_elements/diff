@@ -1,0 +1,24 @@
+<%args>
+$page
+$from =>undef
+$to => undef
+</%args>
+<%init>
+
+$to   ||= $page->revisions->last;
+$from ||= $to->previous || Wifty::Model::Revision->new;
+
+my $before = $to->previous;
+my $after  = $to->next;
+
+use Text::Diff ();
+my $diff = Text::Diff::diff(\($from->content), \($to->content), { STYLE => 'Text::Diff::HTML' });
+
+</%init>
+% if ($before) {
+<span style="float: left"><% Jifty->web->link(url => "/view/".$page->name."/".$before->id, label => "Previous revision") %></span>
+% }
+% if ($after) {
+<span style="float: right"><% Jifty->web->link(url => "/view/".$page->name."/".$after->id, label => "Next revision") %></span>
+% }
+<pre><% $diff |n%></pre><hr />
