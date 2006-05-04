@@ -1,5 +1,32 @@
+<script>
+   // javascript flyout by Eric Wilhelm
+   // TODO use images for minimize/maximize button
+   var targetDiv = 'syntax_content';
+   var divCont;
+   var effectDone = false;
+   var minimize = '-';
+   var maximize = '+';
+
+   function toggleEffect() {
+      if ( !effectDone ) {
+         effectDone = true;
+	     divCont = $(targetDiv).innerHTML;
+         $(targetDiv).innerHTML = '';
+		 $('toggle').innerHTML = maximize;
+      }
+      else {
+         effectDone = false;
+         $(targetDiv).innerHTML = divCont;
+		 $('toggle').innerHTML = minimize;
+      }
+   }
+
+</script>
 <div id="syntax">
-<h2>Wiki Syntax</h2>
+<div><a href="javascript:toggleEffect()"><b>Wiki Syntax Help</b></a>
+<a id="toggle" style="color:#5b5b5b;text-decoration:none;" href="javascript:toggleEffect()"></a>
+</div>
+<div id="syntax_content">
 
 <h3>Phrase Emphasis</h3>
 
@@ -54,4 +81,8 @@ by at least 4 spaces.</p>
 <p>Three or more dashes: <code>---</code></p>
 
 <address>(Thanks to <a href="http://daringfireball.net/projects/markdown/dingus">Daring Fireball</a>)</address>
+</div>
 </div> 
+<script>
+toggleEffect();
+</script>
