@@ -7,11 +7,7 @@ $viewer
 <&|/_elements/wrapper, title => 'Edit: '.$page->name . ($revision->id ? " as of ".$revision->created : '')  &>
 <% Jifty->web->form->start %>
 <% Jifty->web->form->next_page( url => '/view/'.$page->name) %>
-% if ($revision->id) {
-<% $viewer->form_field('content', default_value => $revision->content )%>
-% } else { 
-<% $viewer->form_field('content') %>
-% }
+<% $viewer->form_field('content', ($revision->id ? (default_value => $revision->content) : (undef, undef)), rows=> 30, cols => 80 )%>
 <% Jifty->web->form->submit( label => 'Save') %>
 <% Jifty->web->form->end %>
 <& /_elements/markup &>
