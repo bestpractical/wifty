@@ -80,7 +80,7 @@ We're using L<Jifty::RightsFrom> to pass off ACL decisions to this
 update's page.  But we need to make sure that page history entries aren't
 editable, except by superusers. So we override C<current_user_can>
 to give the arguments a brief massage before handing off to
-C<urrent_user_can> (which we inherit).
+C<current_user_can> (which we inherit).
 
 =cut
 
