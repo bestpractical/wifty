@@ -99,9 +99,9 @@ sub _add_revision {
 
     my $rev = Wifty::Model::Revision->new( current_user => Wifty::CurrentUser->superuser);
     $rev->create(
-        page    => $self->id,
-        content => $args{'content'},
-        # by      => $args{'updated_by'}
+        page			=> $self->id,
+        content			=> $args{'content'},
+        created_by      => $args{'updated_by'}
     );
 
 }
@@ -127,9 +127,7 @@ sub _set {
 
     $self->SUPER::_set(
         column => 'updated_by',
-        value  => 
-                    ( $self->current_user? $self->current_user->user_object : undef )
-        
+        value  => ( $self->current_user? $self->current_user->user_object->id : undef )
     );
 
     return ( $val, $msg );
@@ -138,7 +136,7 @@ sub _set {
 
 =head2 current_user_can ACTION
 
-Let everybody create, read and update pages, but not delete the.
+Let everybody create, read and update pages, but not delete them.
 
 =cut
 

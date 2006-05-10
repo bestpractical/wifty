@@ -8,7 +8,13 @@ $revisions
 % while (my $rev = $revisions->next) {
 <dt><% Jifty->web->link( label => $rev->created, 
                           url => '/view/'.$page->name.'/'.$rev->id
-                        ) %></dt>
+                        ) %>
+% if($rev->created_by) {
+  (<% $rev->created_by->name %>)
+% } else {
+  (Anonymous)
+% }
+</dt>
 <dd><%length($rev->content)%> bytes</dd>
 % }
 </ul>

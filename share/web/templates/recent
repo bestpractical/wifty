@@ -5,7 +5,13 @@ $pages
 <dl id="recentudates">
 % while (my $page = $pages->next) {
 <dt><% Jifty->web->link( label => $page->name, url => '/view/'.$page->name)%></dt>
-<dd><%$page->updated%></dd>
-% } 
+<dd><%$page->updated%>
+% if($page->updated_by) {
+  (<% $page->updated_by->name %>)
+% } else {
+  (Anonymous)
+% }
+</dd>
+% }
 </dl>
 </&>
