@@ -1,5 +1,6 @@
 package Wifty::Model::Page::Schema;
 use Jifty::DBI::Schema;
+use Wifty::Model::User;
 
 column name => 
     type is 'text',
