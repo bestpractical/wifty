@@ -18,6 +18,7 @@ use_ok('Wifty::Model::Revision');
 
 my $system_user = Wifty::CurrentUser->superuser;
 
+# Create a test user
 my $user = Wifty::Model::User->new(current_user => $system_user);
 $user->create(email => 'test@email', name => 'Test User');
 ok($user, "Created a user model object");
@@ -25,12 +26,14 @@ ok($user, "Created a user model object");
 my $current_user = Wifty::CurrentUser->new(id => $user->id);
 ok($current_user, "Created a Wifty::CurrentUser");
 
+#Create a page and check it
 my $page = Wifty::Model::Page->new(current_user => $current_user);
 $page->create(name => "TestPage", content => "Test Content");
 is($page->updated_by->id, $user->id, "Model::Page set updated_by correctly");
 
 $page->set(content => "Second test");
 
+# Make sure the page is creating revisions
 my $revs = Wifty::Model::RevisionCollection->new(current_user => $current_user);
 $revs->limit(column => "page", value => $page->id);
 
