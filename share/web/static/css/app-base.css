@@ -1,6 +1,6 @@
 body { 
     background-color: #dddddd;
-
+    font-size: 85%;
 
 }
 
@@ -14,6 +14,10 @@ div#headers h1 {
  margin-right: -10px;
 
 }
+
+div#headers { margin-left: 10px; }
+div#headers a { position: absolute; top: 0.5em; right: 1em; }
+
 
 a {
  color: black;
