@@ -90,12 +90,11 @@ sub current_user_can {
     my $self  = shift;
     my $right = shift;
     my %args  = (@_);
-    Carp::confess if ($right eq 'read' and not $args{'column'});
     if (    $right eq 'read'
         and $self->id == $self->current_user->id )
     {
         return 1;
-    } elsif ( $right eq 'read' and $args{'column'} eq 'name' ) {
+    } elsif ( $right eq 'read' and $args{'column'} and $args{'column'} eq 'name' ) {
         return (1);
 
     } elsif ( $right eq 'update'
