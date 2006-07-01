@@ -8,7 +8,7 @@ Test the models set up by L<Wifty::Test>
 
 =cut
 
-use Wifty::Test test => 12;
+use Wifty::Test tests => 12;
 
 my $admin = Wifty::CurrentUser->superuser;
 
