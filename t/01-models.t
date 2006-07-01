@@ -10,7 +10,7 @@ model classes.
 =cut
 
 
-use Jifty::Test tests => 9;
+use Wifty::Test tests => 9;
 
 use_ok('Wifty::Model::Page');
 use_ok('Wifty::Model::User');
