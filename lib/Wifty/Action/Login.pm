@@ -8,32 +8,27 @@ Wifty::Action::Login
 =cut
 
 package Wifty::Action::Login;
-use base qw/Wifty::Action Jifty::Action/;
+use base qw/Wifty::Action/;
+use Jifty::Param::Schema;
+use Jifty::Action schema {
 
-=head2 arguments
+param email =>
+    label is 'Email address',
+    is mandatory,
+    ajax validates;
 
-Return the email and password form fields
+param password =>
+    type is 'password',
+    label is 'Password',
+    is mandatory;
 
-=cut
+param remember =>
+    type is 'checkbox',
+    label is 'Remember me?',
+    hints is 'If you want, your browser can remember your login for you',
+    default is 0;
 
-sub arguments { 
-    return( { email => { label => 'Email address',
-                           mandatory => 1,
-                           ajax_validates => 1,
-                            }  ,
-
-              password => { type => 'password',
-                            label => 'Password',
-                            mandatory => 1
-                        },
-              remember => { type => 'checkbox',
-                            label => 'Remember me?',
-                            hints => 'If you want, your browser can remember your login for you',
-                            default => 0,
-                          }
-          });
-
-}
+};
 
 =head2 validate_email ADDRESS
 

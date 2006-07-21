@@ -14,23 +14,22 @@ address is really theirs, when claiming that they lost their password.
 =cut
 
 package Wifty::Action::ResetPassword;
-use base qw/Wifty::Action Jifty::Action/;
-
 use Wifty::Model::User;
+use base qw/Wifty::Action/;
 
-=head2 arguments
+use Jifty::Param::Schema;
+use Jifty::Action schema {
 
-ConfirmEmail has the following fields: address, code, password, and password_confirm.
-Note that it can get the first two from the confirm dhandler.
+param password =>
+    type is 'password',
+    ! is sticky;
 
-=cut
+param password_confirm =>
+    type is 'password',
+    label is 'type your password again',
+    ! is sticky;
 
-sub arguments { 
-    return( { 
-              password => { type => 'password', sticky => 0 },
-              password_confirm => { type => 'password', sticky => 0, label => 'type your password again' },
-          }); 
-}
+};
 
 =head2 take_action
 

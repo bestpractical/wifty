@@ -8,27 +8,21 @@ Wifty::Action::ResendConfirmation
 =cut
 
 package Wifty::Action::ResendConfirmation;
-use base qw/Wifty::Action Jifty::Action/;
+
+use Wifty::Model::User;
+use base qw/Wifty::Action/;
 
 __PACKAGE__->mk_accessors(qw(user_object));
 
-use Wifty::Model::User;
+use Jifty::Param::Schema;
+use Jifty::Action schema {
 
-=head2 arguments
+param address =>
+    label is 'email address',
+    is mandatory,
+    default is '';
 
-The field for C<ResendConfirmation> is:
-
-=over 4
-
-=item address: the email address
-
-=back
-
-=cut
-
-sub arguments {
-    return ( { address => { label     => 'email address', mandatory => 1, default_value => "", }, });
-}
+};
 
 =head2 setup
 

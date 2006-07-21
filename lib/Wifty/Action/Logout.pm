@@ -10,16 +10,6 @@ Wifty::Action::Logout
 package Wifty::Action::Logout;
 use base qw/Wifty::Action Jifty::Action/;
 
-=head2 arguments
-
-Return the email and password form fields
-
-=cut
-
-sub arguments { 
-    return( { });
-}
-
 =head2 take_action
 
 Nuke the current user object
