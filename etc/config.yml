@@ -17,3 +17,5 @@ framework:
   Web:
     StaticRoot: share/web/static
     TemplateRoot: share/web/templates
+application:
+#  RequireAuth: 1
