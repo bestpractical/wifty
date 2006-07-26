@@ -3,12 +3,23 @@ $page
 $revision
 $viewer 
 </%args>
+<%init>
+my $can_edit = $page->current_user_can('update');
+</%init>
 <&/_elements/page_nav, page => $page->name, rev => $revision->id &>
 <&|/_elements/wrapper, title => 'Edit: '.$page->name . ($revision->id ? " as of ".$revision->created : '')  &>
 <% Jifty->web->form->start %>
+% unless($can_edit) {
+  <p> You don't have permission to edit this page. Perhaps
+  <% Jifty->web->tangent(url => '/login', label => 'logging in') %>
+  would help. In the mean time, though, you're welcome to view and
+  copy the source of this page. </p>
+% }
 <% Jifty->web->form->next_page( url => '/view/'.$page->name) %>
 <% $viewer->form_field('content', ($revision->id ? (default_value => $revision->content) : (undef, undef)), rows=> 30, cols => 80 )%>
+% if($can_edit) {
 <% Jifty->web->form->submit( label => 'Save') %>
+% }
 <% Jifty->web->form->end %>
 <& /_elements/markup &>
 </&>

@@ -137,7 +137,9 @@ sub _set {
 
 =head2 current_user_can ACTION
 
-Let everybody create, read and update pages, but not delete them.
+Let everybody read pages. If RequireAuth is set in the app config,
+only allow logged-in users to create and edit pages. Otherwise, allow
+anyone.
 
 =cut
 
@@ -145,12 +147,17 @@ sub current_user_can {
     my $self = shift;
     my $type = shift;
 
-    # We probably want something like this eventually:
-    if ($type =~ /(?:create|read|update)/i) {
+    if ($type eq 'create' || $type eq 'update') {
+        return 0 if
+         Jifty->config->app('RequireAuth')
+           && !$self->current_user->is_superuser
+           && !$self->current_user->id;
         return 1;
-    } else {
-        return $self->SUPER::current_user_can($type, @_);
+    } elsif($type eq 'read') {
+        return 1;
     }
+
+    return $self->SUPER::current_user_can($type, @_);
 }
 
 1;
