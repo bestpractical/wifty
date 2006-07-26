@@ -9,7 +9,7 @@ $revisions
 <dt><% Jifty->web->link( label => $rev->created, 
                           url => '/view/'.$page->name.'/'.$rev->id
                         ) %>
-% if($rev->created_by) {
+% if($rev->created_by->id) {
   (<% $rev->created_by->name %>)
 % } else {
   (Anonymous)
