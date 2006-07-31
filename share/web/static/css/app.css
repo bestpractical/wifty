@@ -1,0 +1,96 @@
+div.argument-content {
+    width: 70%;
+}
+
+* html div.form_field,
+* html form .submit_button { position: relative; }
+
+label.argument-content {
+    display: none !important;
+}
+
+textarea.argument-content {
+    width: 100%;
+    font-size: 1.2em;
+}
+
+* html textarea.argument-content {
+    font-size: 1em;
+}
+
+form .submit_button input {
+    margin-left: 0;
+    font-size: 1.1em;
+    color: white;
+    background: #3d4286;
+    border: 1px outset #3d4286;
+}
+
+#recentupdates dt {
+    float: left;
+    clear: left;
+    width: 45%;
+}
+
+#recentupdates dd {
+    margin-left: 2em;
+    padding-left: 0;
+    margin-bottom: 0.5em;
+    float: left;
+    width: 50%;
+}
+
+* html #recentupdates dt,
+* html #recentupdates dd { position: relative; }
+
+#history dd {
+    font-size: 0.95em;
+    color: #444;
+    margin-left: 2em;
+    padding-left: 0;
+    margin-bottom: 0.5em;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #777;
+}
+
+.revision_nav {
+    margin-top: 0.5em;
+}
+
+/* Login box */
+
+#login-box form {
+    padding-bottom: 0;
+}
+
+#login-box label {
+    width: 10em;
+}
+
+#login-box input.text,
+#login-box input.password {
+    font-size: 1.1em;
+}
+
+#login-box span.error {
+    font-size: 0.8em;
+}
+
+#login-box .argument-remember .hints {
+    float: left;
+    clear: none;
+    width: 50%;
+    font-size: 0.8em;
+    padding: 0 0 0 0.3em;
+}
+
+* html #login-box .argument-remember .hints {
+    width: auto;
+}
+
+#login-box input.argument-remember {
+    float: left;
+}

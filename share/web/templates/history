@@ -4,7 +4,7 @@ $revisions
 </%args>
 <& /_elements/page_nav, page => $page->name &>
 <&|/_elements/wrapper, title => $revisions->count ." revisions of " .$page->name &>
-<ul>
+<dl id="history">
 % while (my $rev = $revisions->next) {
 <dt><% Jifty->web->link( label => $rev->created, 
                           url => '/view/'.$page->name.'/'.$rev->id
@@ -17,5 +17,5 @@ $revisions
 </dt>
 <dd><%length($rev->content)%> bytes</dd>
 % }
-</ul>
+</dl>
 </&>

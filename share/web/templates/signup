@@ -3,7 +3,7 @@ $action
 $next
 </%args>
 <&|/_elements/wrapper, title => 'Signup' &>
-<h2>Signup</h2>
+<p>Just a few bits of information are all that's needed.</p>
 <% Jifty->web->form->start(call => $next, name => "signupbox") %>
 <% $action->form_field('email') %>
 <% $action->form_field('name') %>

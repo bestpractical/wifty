@@ -1,5 +1,5 @@
 <div id="syntax">
-<div><a href="javascript:;" onclick="Element.toggle('syntax_content');return(false);"><b>Wiki Syntax Help</b></a>
+<div><a href="#" onclick="Element.toggle('syntax_content');return(false);"><b>Wiki Syntax Help</b></a>
 </div>
 <div id="syntax_content">
 

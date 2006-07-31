@@ -7,19 +7,25 @@ $viewer
 my $can_edit = $page->current_user_can('update');
 </%init>
 <&/_elements/page_nav, page => $page->name, rev => $revision->id &>
-<&|/_elements/wrapper, title => 'Edit: '.$page->name . ($revision->id ? " as of ".$revision->created : '')  &>
+<&|/_elements/wrapper, title => 'Edit: '.$page->name . ($revision->id ? " as of ".$revision->created : ''), id => "update"  &>
 <% Jifty->web->form->start %>
+<div class="form_wrapper">
+<div class="inline">
 % unless($can_edit) {
-  <p> You don't have permission to edit this page. Perhaps
+  <p style="width: 70%"> You don't have permission to edit this page. Perhaps
   <% Jifty->web->tangent(url => '/login', label => 'logging in') %>
   would help. In the mean time, though, you're welcome to view and
   copy the source of this page. </p>
 % }
 <% Jifty->web->form->next_page( url => '/view/'.$page->name) %>
-<% $viewer->form_field('content', ($revision->id ? (default_value => $revision->content) : (undef, undef)), rows=> 30, cols => 80 )%>
+<% $viewer->form_field('content', ($revision->id ? (default_value => $revision->content) : (undef, undef)), rows => 30 )%>
+</div>
 % if($can_edit) {
+<div class="line">
 <% Jifty->web->form->submit( label => 'Save') %>
+</div>
 % }
+</div>
 <% Jifty->web->form->end %>
 <& /_elements/markup &>
 </&>

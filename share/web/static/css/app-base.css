@@ -1,72 +1,132 @@
 body { 
-    background-color: #dddddd;
-    font-size: 85%;
-
+    background-color: #ddd;
+    font-size: 76%;
+    margin: 0 1.5em 1.5em 1.5em;
 }
-
-div#headers h1 {
- background: green;
- color: white;
- padding: 0.2em;
- border: 0;
- margin: 0;
- margin: -10px 0  0 -10px ;
- margin-right: -10px;
-
-}
-
-div#headers { margin-left: 10px; }
-div#headers a { position: absolute; top: 0.5em; right: 1em; }
-
 
 a {
- color: black;
- font-style: bold;
+    color: #c12d06;
+}
+
+#salutation {
+    position: absolute;
+    top: 0.5em;
+    right: 1.8em;
+    font-family: sans-serif;
+    font-size: 0.9em;
+}
+
+#header {
+    margin-top: 2.3em;
+}
+
+#wikiheader {
+    float: right;
+    text-align: right;
+    padding-right: 1px;
+    width: 28%;
+}
+
+#wikiname {
+    margin: 0;
+    font-size: 1.7em;
+}
+
+#wikiname a {
+    color: black;
+    text-decoration: none;
+}
+
+#pageheader {
+    margin-top: 1em;
+    width: 70%;
+    padding-left: 1px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: sans-serif;
+}
+
+h1 { font-size: 1.5em; }
+h2 { font-size: 1.3em; }
+h3 { font-size: 1.2em; }
+h4 { font-size: 1.1em; }
+
+#pagename {
+    margin: 0.2em 0 0 0;
+    font-size: 2em;
+}
+
+#content {
+    background: white;
+    padding: 0.3em 1em 0.5em 1em;
+    border: 1px solid #ccc;
+    clear: both;
+    margin-top: 0.5em;
+    font-family: sans-serif;
+    font-size: 1.1em;
+}
+
+* html #content { margin-top: 0; }
+
+#update #content, #create #content {
+    position: relative;
+}
+
+#content h1,
+#content h2,
+#content h3,
+#content h4
+{
+    margin: 0.2em 0;
+}
+
+#syntax {
+    float: right;
+    background: white;
+    border: 1px solid #888;
+    padding: 0.2em 0.4em;
+    font-size: 0.9em;
+    width: 25%;
+    position: absolute;
+    top: 1em;
+    right: 1em;
+}
+
+#syntax code, #syntax tt {
+    font-size: 1.2em;
+}
+
+.diff {
+    font-size: 1.1em;
+    overflow: auto;
+}
+
+.file span {
+    display: block;
+    clear: both;
+}
+
+.file .fileheader, .file .hunkheader {
+    color: #666;
+}
+
+.file .hunk .ctx {
+    background: #eee;
+}
+
+.file .hunk ins {
+    background: #dfd;
+    text-decoration: none;
+    display: block;
+}
+
+.file .hunk del {
+    background: #fdd;
+    text-decoration: none;
+    display: block;
 }
 
 #jifty-wait-message {
- display: none;
+    display: none;
 }
-
-div#content {
-    background: #ffffff;
-   padding: 2em;
-}
-
-div#salutation {
-    float: right;
-    font-style: italic;
-}
-
-textarea.content {
-  height: 50em;
-  background: #ddd;
-  border: 1px solid black;
-  padding: 5px;
-}
-
-
-input[type=submit] {
-    border: 1px solid black;
-    font-size: 1.5em;
-    margin: 5px;
-        
-}
-
-div#syntax {
-    float: right;
-    background: white;
-    border: 1px solid #333;
-    padding: 3px;
-    font-size: 0.8em;
-    width: 20em;
-    position: absolute;
-    top: 10em;
-    right: 2em;
-}
-
-.file span { display: block; clear: both; }
-.file .fileheader, .file .hunkheader {color: #888; }
-.file .hunk .ctx { background: #eee;}
-.file .hunk ins { background: #dfd; text-decoration: none; display: block; }
-.file .hunk del { background: #fdd; text-decoration: none; display: block; }

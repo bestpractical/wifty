@@ -15,10 +15,16 @@ use Text::Diff ();
 my $diff = Text::Diff::diff(\($from->content), \($to->content), { STYLE => 'Text::Diff::HTML' });
 
 </%init>
+<div class="revision_nav">
 % if ($before) {
-<span style="float: left"><% Jifty->web->link(url => "/view/".$page->name."/".$before->id, label => "Previous revision") %></span>
+<span class="prev"><% Jifty->web->link(url => "/view/".$page->name."/".$before->id, label => "Previous revision") %></span>
+% }
+% if ( $before and $after ) {
+ | 
 % }
 % if ($after) {
-<span style="float: right"><% Jifty->web->link(url => "/view/".$page->name."/".$after->id, label => "Next revision") %></span>
+<span class="next"><% Jifty->web->link(url => "/view/".$page->name."/".$after->id, label => "Next revision") %></span>
 % }
-<pre><% $diff |n%></pre><hr />
+</div>
+<pre class="diff"><% $diff |n%></pre>
+<hr />

@@ -22,8 +22,8 @@ ok($URL, "Started a test server");
 my $mech = Jifty::Test::WWW::Mechanize->new();
 
 $mech->get_ok($URL, "Got the homepage");
-ok($mech->find_link(text_regex => qr/currently signed in/), 'Got the signin link');
-$mech->follow_link_ok(text_regex => qr/currently signed in/);
+ok($mech->find_link(text_regex => qr/Sign in/), 'Got the signin link');
+$mech->follow_link_ok(text_regex => qr/Sign in/);
 
 sub try_login {
     my $mech = shift;

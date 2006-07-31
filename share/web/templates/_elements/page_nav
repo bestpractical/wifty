@@ -1,20 +1,14 @@
 <%init>
 my $subpath =  $page . ($rev ? "/$rev" : '');
-my $top = Jifty->web->navigation;
-my $this = $top->child( 
-    This => 
-        url => "/view/".$subpath,
-        label => $page,
-        sort_order => 5
-);
+my $top = Jifty->web->page_navigation;
 
 my $page_obj = Wifty::Model::Page->new();
 $page_obj->load_by_cols(name => $page);
 
-$this->child( View => url => '/view/'.$subpath);
-$this->child( Edit => url => '/edit/'.$subpath) if $page_obj->current_user_can('update');
-$this->child( History => url => '/history/'.$page);
-$this->child( Latest => url => '/view/'.$page) if ($rev);
+$top->child( View => url => '/view/'.$subpath);
+$top->child( Edit => url => '/edit/'.$subpath);
+$top->child( History => url => '/history/'.$page);
+$top->child( Latest => url => '/view/'.$page) if ($rev);
 
 </%init>
 <%args>
