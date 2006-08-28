@@ -105,3 +105,12 @@ form .line {
     clear: both;
 }
 
+/* So the admin ui is one row per line */
+
+.jifty_admin.item.inline {
+     clear: both;
+}
+
+.jifty_admin .editlink {
+    float: right;
+}
