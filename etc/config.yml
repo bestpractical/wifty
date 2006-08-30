@@ -1,6 +1,7 @@
 framework:
   AdminMode: 0
   ApplicationName: Wifty
+  AdminEmail: 'wifty@example.com'
 
   Database:
     Driver: SQLite
@@ -9,7 +10,10 @@ framework:
     Version: 0.0.20
     Password: ''
     RequireSSL: 0
-#  Mailer: IO
+  Plugins:
+    - Login: {}
+  Mailer: SMTP
+  MailerArgs: ['69.17.117.59']
 #  MailerArgs:
 #    - %log/mail.log%
   SiteConfig: etc/site_config.yml

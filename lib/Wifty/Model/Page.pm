@@ -128,7 +128,9 @@ sub _set {
 
     $self->SUPER::_set(
         column => 'updated_by',
-        value  => ( $self->current_user? $self->current_user->user_object->id : undef )
+        value  => (   $self->current_user->user_object 
+		    ? $self->current_user->user_object->id 
+		    : undef )
     );
 
     return ( $val, $msg );
