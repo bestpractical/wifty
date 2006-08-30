@@ -3,11 +3,11 @@ use strict;
 
 =head1 NAME
 
-Wifty::Action::SendLostPasswordConfirmation
+Wifty::Action::SendPasswordReminder
 
 =cut
 
-package Wifty::Action::SendLostPasswordConfirmation;
+package Wifty::Action::SendPasswordReminder;
 use base qw/Wifty::Action Jifty::Action/;
 
 __PACKAGE__->mk_accessors(qw(user_object));
@@ -16,7 +16,7 @@ use Wifty::Model::User;
 
 =head2 arguments
 
-The field for C<SendLostPasswordConfirmation> is:
+The field for C<SendPasswordReminder> is:
 
 =over 4
 

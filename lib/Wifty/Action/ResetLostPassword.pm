@@ -3,7 +3,7 @@ use strict;
 
 =head1 NAME
 
-Wifty::Action::ResetPassword - Confirm and reset a lost password
+Wifty::Action::ResetLostPassword - Confirm and reset a lost password
 
 =head1 DESCRIPTION
 
@@ -13,7 +13,7 @@ address is really theirs, when claiming that they lost their password.
 
 =cut
 
-package Wifty::Action::ResetPassword;
+package Wifty::Action::ResetLostPassword;
 use Wifty::Model::User;
 use base qw/Wifty::Action/;
 

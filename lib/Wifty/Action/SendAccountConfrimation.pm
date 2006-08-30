@@ -3,11 +3,11 @@ use strict;
 
 =head1 NAME
 
-Wifty::Action::ResendConfirmation
+Wifty::Action::SendAccountConfirmation
 
 =cut
 
-package Wifty::Action::ResendConfirmation;
+package Wifty::Action::SendAccountConfirmation;
 
 use Wifty::Model::User;
 use base qw/Wifty::Action/;
