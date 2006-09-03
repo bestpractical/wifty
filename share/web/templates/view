@@ -1,14 +1,15 @@
 <%args>
 $page
 $revision
+$viewer
 </%args>
 <& /_elements/page_nav, page => $page->name, rev => $revision->id &>
 <&|/_elements/wrapper, title => $page->name . ($revision->id ? " as of ".$revision->created : '') &>
+
 % if ($revision->id) {
 <& /_elements/diff, page => $page, to => $revision &>
-
-<% $page->wiki_content($revision->content) |n%>
-% } else {
-<% $page->wiki_content |n %>
 % }
+
+<% $viewer->form_value('content', label => "") %>
+
 </&>
