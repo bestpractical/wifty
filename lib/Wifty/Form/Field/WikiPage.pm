@@ -71,6 +71,14 @@ sub wiki_content {
 
 }
 
+=head2 rows
+
+C<WikiPage> forms have 30 rows in their textarea by default
+
+=cut
+
+sub rows { 30 };
+
 =head1 SEE ALSO
 
 L<Text::Markdown>, L<Jifty::Web::Form::Field::Textarea>
