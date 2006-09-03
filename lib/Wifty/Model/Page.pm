@@ -11,7 +11,7 @@ column name =>
 column content =>
     type is 'text',
     label is 'Content',
-    render_as 'textarea';
+    render_as 'Wifty::Form::Field::WikiPage';
 
 column updated =>
     type is 'timestamp',
@@ -31,43 +31,6 @@ use Wifty::Model::RevisionCollection;
 use Text::Markdown;
 use HTML::Scrubber;
 
-
-=head2 wiki_content [CONTENT]
-
-Wikify either the content of a scalar passed in as an argument or
-this page's "content" attribute.
-
-=cut
-
-sub wiki_content {
-    my $self     = shift;
-    my $content  = shift || $self->content() || '';
-    my $scrubber = HTML::Scrubber->new();
-
-    $scrubber->default(
-        0,
-        {   '*'   => 0,
-            id    => 1,
-            class => 1,
-            href  => qr{^(?:(?:\w+$)|http:|ftp:|https:|/)}i,
-
-            # Match http, ftp and relative urls
-            face   => 1,
-            size   => 1,
-            target => 1
-        }
-    );
-
-    $scrubber->deny(qw[*]);
-    $scrubber->allow(
-        qw[H1 H2 H3 H4 H5 A STRONG EM CODE PRE B U P BR I HR BR SPAN DIV UL OL LI DL DT DD]);
-    $scrubber->comment(0);
-
-    $content = Text::Markdown::markdown( $content );
-    $content = $scrubber->scrub( $content );
-    return ( $content );
-
-}
 
 sub create {
     my $self = shift;

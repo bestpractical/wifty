@@ -18,7 +18,7 @@ my $can_edit = $page->current_user_can('update');
   copy the source of this page. </p>
 % }
 <% Jifty->web->form->next_page( url => '/view/'.$page->name) %>
-<% $viewer->form_field('content', ($revision->id ? (default_value => $revision->content) : (undef, undef)), rows => 30 )%>
+<% $viewer->form_field('content', rows => 30 )%>
 </div>
 % if($can_edit) {
 <div class="line">

@@ -39,7 +39,11 @@ on qr{^/(view|edit)/(.*)}, run {
     $revision->load_by_cols( page => $page->id, id => $rev ) if ($rev);
     set page => $page;
     set revision => $revision;
-    set viewer => Jifty->web->new_action( class => 'UpdatePage', record => $page );
+    my $viewer = Jifty->web->new_action( class => 'UpdatePage', record => $page );
+    if($rev) {
+        $viewer->argument_value(content => $revision->content);
+    }
+    set viewer => $viewer;
     show("/$page_name");
 };
 

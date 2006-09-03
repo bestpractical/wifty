@@ -3,7 +3,7 @@ use Jifty::DBI::Schema;
 
 column page  => refers_to Wifty::Model::Page;
 
-column content => type is 'text', render_as 'textarea';
+column content => type is 'text', render_as 'Wifty::Form::Field::WikiPage';
 
 column created => type is 'timestamp';
 
