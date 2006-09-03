@@ -113,4 +113,11 @@ form .line {
 
 .jifty_admin .editlink {
     float: right;
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: 0 0 10px 10px;
+}
+
+.jifty_admin hr {
+    clear: both;
 }
