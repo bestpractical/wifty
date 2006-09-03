@@ -9,6 +9,14 @@ label.argument-content {
     display: none !important;
 }
 
+.jifty_admin label.argument-content {
+    display: inline !important;
+}
+
+.jifty_admin div.argument-content {
+    width: 100%;
+}
+
 textarea.argument-content {
     width: 100%;
     font-size: 1.2em;
