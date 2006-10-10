@@ -23,7 +23,6 @@ Render a wikified view of this field's content.
 
 sub render_value {
     my $self = shift;
-    my $field;
     my $field = '<span';
     $field .= qq! class="@{[ $self->classes ]}"> !;
     $field .= $self->wiki_content;
