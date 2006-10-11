@@ -16,6 +16,10 @@ a {
     font-size: 0.9em;
 }
 
+#salutation a {
+    color: black;
+}
+
 #header {
     margin-top: 2.3em;
 }
