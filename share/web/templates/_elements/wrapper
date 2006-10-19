@@ -15,6 +15,7 @@
       </h1>
 
       <% Jifty->web->navigation->render_as_menu %>
+      <& /_elements/search_box &>
     </div>
 
     <div id="pageheader">

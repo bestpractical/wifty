@@ -28,7 +28,12 @@ a {
     float: right;
     text-align: right;
     padding-right: 1px;
-    width: 28%;
+    width: 50%;
+}
+
+#wikiheader label {
+    display: inline;
+    float: none;
 }
 
 #wikiname {
