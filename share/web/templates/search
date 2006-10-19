@@ -1,0 +1,19 @@
+<%args>
+$pages
+$search
+</%args>
+<%init>
+warn $search;
+</%init>
+<&|/_elements/wrapper, title => 'Search' &>
+<% Jifty->web->form->start %>  
+  <div id="searchbox" class="inline">
+    <% $search->form_field('contains', label => 'Find pages containing:') %>
+    <% $search->button(label => 'Search') %>
+  </div>
+  
+<% Jifty->web->form->end %>  
+% if($pages) {  
+<& /_elements/page_list, pages => $pages, id => 'searchresults' &>
+% }
+</&>

@@ -34,13 +34,13 @@ form .submit_button input {
     border: 1px outset #3d4286;
 }
 
-#recentupdates dt {
+.pagelist dt {
     float: left;
     clear: left;
     width: 45%;
 }
 
-#recentupdates dd {
+.pagelist dd {
     margin-left: 2em;
     padding-left: 0;
     margin-bottom: 0.5em;
@@ -48,8 +48,8 @@ form .submit_button input {
     width: 50%;
 }
 
-* html #recentupdates dt,
-* html #recentupdates dd { position: relative; }
+* html .pagelist dt,
+* html .pagelist dd { position: relative; }
 
 #history dd {
     font-size: 0.95em;
