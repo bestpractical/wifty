@@ -7,7 +7,9 @@
                                           url => '/__jifty/admin/') %>.
   </div>
 % }
-
+    <div id="logo">
+   <% Jifty->config->app('Logo') ? '<img src="'.Jifty->config->app('Logo').'" alt="" />' : '' |n %>
+   </div>
   <div id="header">
     <div id="wikiheader">
       <h1 id="wikiname">

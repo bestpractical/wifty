@@ -15,6 +15,10 @@ field on update, and wikifies itself on read-only display.
 package Wifty::Form::Field::WikiPage;
 use base qw(Jifty::Web::Form::Field::Textarea);
 
+use HTML::Scrubber;
+
+
+
 =head2 render_value
 
 Render a wikified view of this field's content.
@@ -50,7 +54,7 @@ sub wiki_content {
         {   '*'   => 0,
             id    => 1,
             class => 1,
-            href  => qr{^(?:(?:\w+$)|http:|ftp:|https:|/)}i,
+            href  => qr{^(?:(?:\w+$)|http:|ftp:|https:|\.?/)}i,
 
             # Match http, ftp and relative urls
             face   => 1,
@@ -64,8 +68,15 @@ sub wiki_content {
         qw[H1 H2 H3 H4 H5 A STRONG EM CODE PRE B U P BR I HR BR SPAN DIV UL OL LI DL DT DD]);
     $scrubber->comment(0);
 
-    $content = Text::Markdown::markdown( $content );
-    $content = $scrubber->scrub( $content );
+    if (Jifty->config->app('Formatter') eq 'Markdown' ) {
+            require Text::Markdown;
+            $content = Text::Markdown::markdown( $content );
+    }
+    elsif (Jifty->config->app('Formatter') eq 'Kwiki') {
+        require Text::KwikiFormatish;
+        $content = Text::KwikiFormatish::format( $content);
+    }
+    #$content = $scrubber->scrub( $content );
     return ( $content );
 
 }

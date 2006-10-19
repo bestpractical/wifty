@@ -28,8 +28,6 @@ column revisions =>
 package Wifty::Model::Page;
 use base qw/Wifty::Record/;
 use Wifty::Model::RevisionCollection;
-use Text::Markdown;
-use HTML::Scrubber;
 
 
 sub create {

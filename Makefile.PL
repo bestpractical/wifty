@@ -5,4 +5,5 @@ requires('Jifty');
 requires('Text::Markdown');
 requires('HTML::Scrubber');
 requires('Text::Diff::HTML');
+recommends('Text::KwikiFormatish');
 WriteAll;

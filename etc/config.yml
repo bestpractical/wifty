@@ -23,3 +23,7 @@ framework:
 application:
 #  RequireAuth: 1
   WikiName: A Wiki
+  Formatter: Markdown
+  # The formatter options are "Markdown" and "Kwiki"
+  # Logo: http://svk.bestpractical.com/svk-logo.png
+  # The logo points to the url to a logo image

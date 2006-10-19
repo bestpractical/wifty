@@ -24,6 +24,10 @@ a {
     margin-top: 2.3em;
 }
 
+#logo {
+    float: right;
+}
+
 #wikiheader {
     float: right;
     text-align: right;

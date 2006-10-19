@@ -1,0 +1,53 @@
+#!/usr/bin/perl
+
+use warnings;
+use strict;
+
+use Text::KwikiFormatish;
+
+use Jifty;
+Jifty->new();
+
+get_pages('/tmp/svkwiki/data/database');
+
+
+
+sub import_page {
+    my $path = shift;
+    my $name = shift;
+    my $page = Wifty::Model::Page->new(current_user => Wifty::CurrentUser->superuser);
+    open( my $file, "<", $path)||die $!;
+    my @content = <$file>;
+   # chomp(@content);
+    close $file;
+    my $content = join("\n",@content);
+       return unless $content; 
+    my      $html = Text::KwikiFormatish::format( $content);
+
+     $name =~ s/\s*//g;
+    $page->load_by_cols(name =>$name);
+    if ($page->id) {
+        $page->set_content($content);
+    }
+    else {
+   my ($ret)=  $page->create( name => $name, content => $content);
+   warn $ret;
+   }
+}
+
+sub get_pages {
+    my $src = shift;
+    File::Find::find(
+        {   wanted => sub {
+                   &import_page($File::Find::name, $_) 
+            },
+            follow => 0
+            
+        },
+
+        $src
+    );
+
+    
+
+}

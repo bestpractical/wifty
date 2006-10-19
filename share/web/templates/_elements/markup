@@ -1,3 +1,7 @@
+<%init>
+return undef unless (Jifty->config->app('Formatter') eq 'Markdown');
+</%init>
+
 <div id="syntax">
 <div><a href="#" onclick="Element.toggle('syntax_content');return(false);"><b>Wiki Syntax Help</b></a>
 </div>
