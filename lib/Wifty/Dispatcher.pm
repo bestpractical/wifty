@@ -69,6 +69,19 @@ on 'pages', run {
     set pages => $pages;
 };
 
+on 'search', run {
+    my $search = Jifty->web->response->result('search');
+    my $collection = undef;
+    if($search) {
+        $collection = $search->content('search');
+    }
+    my $action =  Jifty->web->new_action(class => 'SearchPage', moniker => 'search');
+    $action->sticky_on_success(1);
+
+    set search => $action;
+    set pages => $collection;
+};
+
 # Show recent edits
 on 'recent', run {
     my $then = DateTime->from_epoch( epoch => ( time - ( 86400 * 7 ) ) );
