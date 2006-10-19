@@ -12,10 +12,9 @@ framework:
     RequireSSL: 0
   Plugins:
     - Login: {}
-  Mailer: SMTP
-  MailerArgs: ['69.17.117.59']
-#  MailerArgs:
-#    - %log/mail.log%
+  Mailer: IO
+  MailerArgs:
+    - %log/mail.log%
   SiteConfig: etc/site_config.yml
 
   Web:
