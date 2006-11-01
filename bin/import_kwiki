@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/opt/local/bin/perl
 
 use warnings;
 use strict;
@@ -8,7 +8,7 @@ use Text::KwikiFormatish;
 use Jifty;
 Jifty->new();
 
-get_pages('/tmp/svkwiki/data/database');
+get_pages(shift @ARGV);
 
 
 
@@ -21,17 +21,17 @@ sub import_page {
    # chomp(@content);
     close $file;
     my $content = join("\n",@content);
-       return unless $content; 
+       return unless length($content) > 4; 
     my      $html = Text::KwikiFormatish::format( $content);
 
-     $name =~ s/\s*//g;
+    #$name =~ s/\s*//g;
     $page->load_by_cols(name =>$name);
     if ($page->id) {
         $page->set_content($content);
     }
     else {
    my ($ret)=  $page->create( name => $name, content => $content);
-   warn $ret;
+   warn $ret. ": $name";
    }
 }
 

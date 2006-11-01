@@ -83,7 +83,7 @@ on 'search', run {
 };
 
 # Show recent edits
-on 'recent', run {
+on 'recent*', run {
     my $then = DateTime->from_epoch( epoch => ( time - ( 86400 * 7 ) ) );
     my $pages = Wifty::Model::PageCollection->new();
     $pages->limit(
