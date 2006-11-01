@@ -18,7 +18,7 @@ sub import_page {
     my $page = Wifty::Model::Page->new(current_user => Wifty::CurrentUser->superuser);
     open( my $file, "<", $path)||die $!;
     my @content = <$file>;
-   # chomp(@content);
+    chomp(@content);
     close $file;
     my $content = join("\n",@content);
        return unless length($content) > 4; 
