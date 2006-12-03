@@ -20,12 +20,10 @@ use Template::Declare::Tags;
 use Jifty::View::Declare::Templates;
 
 private template page_list => sub {
-
     # actually creates: sub _jifty_ui_template_page_list
     #
-    my (  $pages, $id ) = get(qw(pages id));
-    with( id => $id, class => "pagelist" ), dl {
-
+    my ( $pages, $id ) = get(qw(pages id));
+    dl {{ id is $id, class is "pagelist" }
         while ( my $page = $pages->next ) {
             dt {
                 hyperlink(
@@ -110,10 +108,9 @@ private template wrapper => sub {
     show('nav');
     show( 'header', title => $args->{'title'}, wikiname => $wikiname );
 
-    with( id => $args->{id} ), body {
-
+    body {{ id is $args->{id} }
         if ( Jifty->config->framework('AdminMode') ) {
-            with( class => 'warning admin_mode' ), div {
+            div {{ class is 'warning admin_mode' }
                 _('Alert') . ":"
                     . tangent(
                     label => _('Administration mode is enabled'),
@@ -122,22 +119,22 @@ private template wrapper => sub {
                     . ".";
                 }
         }
-        with( id => 'logo' ), div {
+        div {{ id is 'logo' }
             Jifty->config->app('Logo')
                 ? '<img src="' . Jifty->config->app('Logo') . '" alt="" />'
                 : '';
         };
-        with( id => 'header' ), div {
-            with( id => 'wikiheader' ), div {
-                with( id => "wikiname" ), h1 {
+        div {{ id is 'header' }
+            div {{ id is 'wikiheader' }
+                h1 {{ id is 'wikiname' }
                     hyperlink( url => "/", label => _($wikiname) );
                 };
                 outs(Jifty->web->navigation->render_as_menu);
                 show('search_box');
 
             };
-            with( id => 'pageheader' ), div {
-                with( id => "pagename" ), h1 {
+            div {{ id is 'pageheader' }
+                h1 {{ id is 'pagename' }
                     _( $args->{title} );
                 };
 
@@ -147,18 +144,18 @@ private template wrapper => sub {
 
         show('salutation');
 
-        with( class => "clear" ),   hr  {};
-        with( id    => 'content' ), div {
+        hr {{ class is 'clear' }};
+        div {{ id is 'content' }
             Jifty->web->render_messages;
             my $buf = '';
             {
             local $Template::Declare::Tags::BUFFER ='';
             $coderef->();
             $buf = $Template::Declare::Tags::BUFFER;
-            warn "My buffer is $buf";
+            #warn "My buffer is $buf";
             }
             outs($buf);
-            with( class => "clear" ), hr { };
+            hr {{ class is 'clear' }};
 
             }
         }
@@ -171,21 +168,18 @@ private template search_box => sub {
     $action->sticky_on_success(1);
     span {
         form {
-
             form_next_page( url => '/search' );
-            param( $action, 'contains', label => 'Search:' );
+                render_param( $action, 'contains', label => 'Search:' );
             }
         };
 };
 
 private template salutation => sub {
-    with (id => 'salutation'),
-        div {
+    div {{ id is 'salutation' }
 
         if (    Jifty->web->current_user->id and Jifty->web->current_user->user_object ) {
             outs('Hiya, ');
-            with class => 'user',
-                span { Jifty->web->current_user->user_object->name };
+            span {{ class is 'user' } Jifty->web->current_user->user_object->name };
             outs('(' . hyperlink( label => q{Logout}, url => '/logout' ) .')');
         } else {
             outs("You're not currently signed in.") .  tangent( label => q{Sign in}, url => '/login' ) . "."; }
@@ -209,10 +203,9 @@ private template diff => sub {
         { STYLE => 'Text::Diff::HTML' }
     );
 
-    with( class => 'revision_nav' ), div {
+    div {{ class is 'revision_nav' }
         if ($before) {
-            span {
-                with class => "prev";
+            span {{ class is "prev" }
                 hyperlink(
                     url   => "/view/" . $args{page}->name . "/" . $before->id,
                     label => "Previous revision"
@@ -222,7 +215,7 @@ private template diff => sub {
         outs('|') if ( $before and $after );
 
         if ($after) {
-            with( class => "next" ), span {
+            span {{ class is "next" }
                 hyperlink(
                     url   => "/view/" . $args{'page'}->name . "/" . $after->id,
                     label => "Next revision"
@@ -230,9 +223,7 @@ private template diff => sub {
             };
         }
     };
-    with class => "diff", pre {
-        $diff;
-        };
+    pre {{ class is 'diff' } $diff };
     hr {}
 
 };
@@ -244,11 +235,14 @@ template create => sub {
         {title => 'New page: ' . $page, id => 'create' }, 
         sub {p{
             form {
-                with( class => 'form_wrapper' ), div {
+                div {{ class is 'form_wrapper' }
                     form_next_page( url => '/view/' . $page );
-                        param($action => 'name', render_as     => 'hidden', default_value => $page);
-                    with( class => 'inline' ), div { param ($action => 'content', rows => 30 ); };
-                    with( class => 'line' ), div { form_submit( label => 'Create' );
+                        render_param($action => 'name', render_as     => 'hidden', default_value => $page);
+                    div {{ class is 'inline' }
+                        render_param($action => 'content', rows => 30 );
+                    };
+                    div {{ class is 'inline' }
+                        form_submit( label => 'Create' );
                     };
                 };
             };
@@ -267,12 +261,12 @@ template edit => sub {
         {   title => 'Edit: ' . $page->name . ( $revision->id ? " as of " . $revision->created : '' ), id => "update" },
         sub {
             form {
-                with( class => 'form_wrapper' ), div {
-                    with( class => 'inline' ), div {
-                        unless ($can_edit) { with( style => "width: 70%" ), p { q{You don't have permission to edit this page. Perhaps} . tangent( url   => '/login', label => 'logging in') . q{would help. In the mean time, though, you're welcome to view and} . q{copy the source of this page.}; } }
+                div {{ class is 'form_wrapper' }
+                    div {{ class is 'inline' }
+                        unless ($can_edit) { p {{ style is "width: 70%" } q{You don't have permission to edit this page. Perhaps} . tangent( url   => '/login', label => 'logging in') . q{would help. In the mean time, though, you're welcome to view and} . q{copy the source of this page.}; } }
                         form_next_page( url => '/view/' . $page->name );
-                        param($viewer => 'content');
-                        if ($can_edit) { with( class => 'line' ), div { form_submit( label => 'Save' ); } }
+                        render_param($viewer => 'content');
+                        if ($can_edit) { div {{ class is 'line' } form_submit( label => 'Save' ); } }
                     };
                 };
                 show('markup');
@@ -292,9 +286,7 @@ template history => sub {
         'wrapper',
         { title => $revisions->count . " revisions of " . $page->name },
         sub {
-            with( id => "history" ),
-
-                dl {
+            dl {{ id is 'history' }
                 while ( my $rev = $revisions->next ) {
                     dt {
                         hyperlink(
@@ -322,11 +314,11 @@ template login => sub {
         { title => 'Login' },
         sub {
             if ( not current_user->id ) {
-                with( id => 'login-box' ), div {
-                    with( call => $next, name => "loginbox" ), form {
-                        param($action => 'email');
-                        param($action => 'password');
-                        param($action => 'remember');
+                div {{ id is 'login-box' }
+                    form {{ call is $next, name is "loginbox" }
+                        render_param($action => 'email');
+                        render_param($action => 'password');
+                        render_param($action => 'remember');
                         form_submit(
                             label  => 'Login',
                             submit => $action
@@ -441,8 +433,8 @@ template search => sub {
         { title => 'Search' },
         sub {
             form {
-                with( id    => "searchbox", class => 'inline'), div {
-                    param($search => 'contains', label => 'Find pages containing:' );
+                div {{ id is "searchbox", class is 'inline' }
+                    render_param($search => 'contains', label => 'Find pages containing:' );
                     form_submit( label => 'Search', submit => $search);
                     };
 
@@ -455,17 +447,17 @@ template search => sub {
 };
 
 template signup => sub {
-    my (  $action, $next ) = get(qw(action next));
+    my ( $action, $next ) = get(qw(action next));
     show(
         'wrapper',
         { title => 'Signup' },
         sub {
             p {q{Just a few bits of information are all that's needed.}};
-            with( call => $next, name => "signupbox" ), form {
-                param ($action => 'email');
-                param ($action => 'name');
-                param ($action => 'password');
-                param ($action => 'password_confirm');
+            form {{ call is $next, name is "signupbox" }
+                render_param($action => 'email');
+                render_param($action => 'name');
+                render_param($action => 'password');
+                render_param($action => 'password_confirm');
                 form_submit( label => 'Signup', submit => $action );
             };
         }
@@ -486,7 +478,7 @@ template view => sub {
                 show( 'diff', page => $page, to => $revision );
             }
 
-            param($viewer => 'content', label => '', render_mode => 'read');
+            render_param($viewer => 'content', label => '', render_mode => 'read');
             #$viewer->form_value( 'content', label => "" );
 
         }
@@ -514,11 +506,7 @@ private template header => sub {
                 'content'    => "text/html; charset=utf-8"
                 ),
                 meta {};
-            with(
-                name    => "robots",
-                content => "all"
-                ),
-                meta {};
+            meta {{ name is 'robots', content is 'all' }};
             title { _($title) . ' - ' . _($wikiname) };
 
             Jifty->web->include_css;
@@ -531,17 +519,14 @@ private template header => sub {
 template markup => sub {
     return undef unless ( Jifty->config->app('Formatter') eq 'Markdown' );
 
-    with( id => 'syntax' ), div {
+    div {{ id is 'syntax' }
         div {
-            with(
-                href    => "#",
-                onclick => "Element.toggle('syntax_content');return(false);"
-                ),
-                a {
-                b {'Wiki Syntax Help'};
-                }
+            a {{
+                href    is "#",
+                onclick is "Element.toggle('syntax_content');return(false);"
+            } b {'Wiki Syntax Help'}; }
         };
-        with( id => 'syntax_content' ), div {
+        div {{ id is 'syntax_content' }
             h3   {'Phrase Emphasis'};
             code {
                 b { '**bold**'; };
