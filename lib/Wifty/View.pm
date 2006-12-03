@@ -495,17 +495,9 @@ private template header => sub {
         '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">'
     );
 
-    with(
-        xmlns      => "http://www.w3.org/1999/xhtml",
-        'xml:lang' => "en"
-        ),
-        html {
+    html {{ xmlns is "http://www.w3.org/1999/xhtml", xml__lang is "en" }
         head {
-            with(
-                'http-equiv' => "content-type",
-                'content'    => "text/html; charset=utf-8"
-                ),
-                meta {};
+            meta {{ http_equiv is "content-type", content is "text/html; charset=utf-8" }};
             meta {{ name is 'robots', content is 'all' }};
             title { _($title) . ' - ' . _($wikiname) };
 
