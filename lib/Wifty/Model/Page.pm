@@ -1,6 +1,13 @@
-package Wifty::Model::Page::Schema;
+
+package Wifty::Model::Page;
+use warnings;
+use strict;
+
+use base qw/Wifty::Record/;
 use Jifty::DBI::Schema;
 use Wifty::Model::User;
+
+use Jifty::Record schema {
 
 column name => 
     type is 'text',
@@ -24,9 +31,9 @@ column updated_by =>
 
 column revisions =>
     refers_to Wifty::Model::RevisionCollection by 'page';
+};
 
-package Wifty::Model::Page;
-use base qw/Wifty::Record/;
+
 use Wifty::Model::RevisionCollection;
 
 

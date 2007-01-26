@@ -1,17 +1,23 @@
-package Wifty::Model::Revision::Schema;
+
+package Wifty::Model::Revision;
+use warnings;
+use strict;
+
+
+use base qw/Wifty::Record/;
+
 use Jifty::DBI::Schema;
 
+use Jifty::Record schema {
 column page  => refers_to Wifty::Model::Page;
 
 column content => type is 'text', render_as 'Wifty::Form::Field::WikiPage';
 
 column created => type is 'timestamp';
-
 column created_by => refers_to Wifty::Model::User, since '0.0.20';
+};
 
 
-package Wifty::Model::Revision;
-use base qw/Wifty::Record/;
 use Jifty::RightsFrom column => 'page';
 use DateTime;
 use Wifty::Model::User;
