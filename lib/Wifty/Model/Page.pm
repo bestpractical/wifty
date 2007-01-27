@@ -75,8 +75,6 @@ sub _add_revision {
 
 }
 
-{
-no warnings qw'redefine';
 sub set_content {
     my $self    = shift;
     my $content = shift;
@@ -86,7 +84,6 @@ sub set_content {
                 );
     return ( $val, $msg );
 }
-};
 
 sub _set {
     my $self = shift;
