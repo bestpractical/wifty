@@ -6,6 +6,7 @@ use strict;
 use base qw/Wifty::Record/;
 use Jifty::DBI::Schema;
 use Wifty::Model::User;
+use Wifty::Model::RevisionCollection;
 
 use Jifty::Record schema {
 
@@ -32,10 +33,6 @@ column updated_by =>
 column revisions =>
     refers_to Wifty::Model::RevisionCollection by 'page';
 };
-
-
-use Wifty::Model::RevisionCollection;
-
 
 sub create {
     my $self = shift;
