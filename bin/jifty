@@ -1,14 +1,15 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 use warnings;
 use strict;
 use File::Basename qw(dirname); 
+use UNIVERSAL::require;
 
 BEGIN {
-    my $dir = dirname(__FILE__); 
-    unshift @INC, "$dir/../../Jifty/lib";
-    unshift @INC, "$dir/../lib";
-    push @INC, "$dir/../../Jifty/deps";
+    Jifty::Util->require or die $UNIVERSAL::require::ERROR;
+    my $root = Jifty::Util->app_root;
+    unshift @INC, "$root/lib" if ($root);
 }
 
 use Jifty::Script;
+local $SIG{INT} = sub { warn "Stopped\n"; exit; };
 Jifty::Script->dispatch();
