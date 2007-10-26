@@ -63,6 +63,8 @@ sub wiki_content {
         }
     );
 
+    $content =~ s/(?:\n\r|\r\n|\r)/\n/g;
+
     $scrubber->deny(qw[*]);
     $scrubber->allow(
         qw[H1 H2 H3 H4 H5 A STRONG EM CODE PRE B U P BR I HR BR SPAN DIV UL OL LI DL DT DD]);
