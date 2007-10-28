@@ -54,8 +54,9 @@ sub previous {
         quote_value    => 0,
         case_sensitive => 1
     );
-    $revisions->order_by( { column => 'id' } );
-    return $revisions->last;
+    $revisions->order_by( { column => 'id', order => 'desc' } );
+    $revisions->rows_per_page(1);
+    return $revisions->first;
 }
 
 sub next {
@@ -77,6 +78,7 @@ sub next {
         case_sensitive => 1
     );
     $revisions->order_by( { column => 'id' } );
+    $revisions->rows_per_page(1);
     return $revisions->first;
 }
 
