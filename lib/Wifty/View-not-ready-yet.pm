@@ -307,58 +307,6 @@ template history => sub {
 
 };
 
-template login => sub {
-    my ( $action, $next, ) = get(qw(action next));
-    show(
-        'wrapper',
-        { title => 'Login' },
-        sub {
-            if ( not current_user->id ) {
-                div {{ id is 'login-box' }
-                    form {{ call is $next, name is "loginbox" }
-                        render_param($action => 'email');
-                        render_param($action => 'password');
-                        render_param($action => 'remember');
-                        form_submit(
-                            label  => 'Login',
-                            submit => $action
-                        );
-                    };
-                };
-
-                p {
-                    tangent(
-                        label => q{Don't have an account?},
-                        url   => '/signup'
-                    );
-                };
-
-            } else {
-                p {
-                    "You're already logged in as "
-                        . current_user->user_object->name . "."
-                        . "If this isn't you, "
-                        . tangent(
-                        url   => '/logout',
-                        label => 'click here'
-                        )
-                        . ".";
-                    }
-            }
-        }
-    );
-};
-
-template logout => sub {
-    show(
-        'wrapper',
-        { title => "Logged out" },
-        sub {
-            p { _("Ok, you're now logged out. Have a good day.") };
-        }
-    );
-};
-
 template no_such_page => sub {
     my (  $page ) = get(qw(page));
     show(
@@ -444,25 +392,6 @@ template search => sub {
             }
         }
     );
-};
-
-template signup => sub {
-    my ( $action, $next ) = get(qw(action next));
-    show(
-        'wrapper',
-        { title => 'Signup' },
-        sub {
-            p {q{Just a few bits of information are all that's needed.}};
-            form {{ call is $next, name is "signupbox" }
-                render_param($action => 'email');
-                render_param($action => 'name');
-                render_param($action => 'password');
-                render_param($action => 'password_confirm');
-                form_submit( label => 'Signup', submit => $action );
-            };
-        }
-    );
-
 };
 
 template view => sub {
@@ -600,20 +529,6 @@ template markup => sub {
    };
         };
     };
-};
-
-package Wifty::View::let;
-use Template::Declare::Tags;
-
-# /let/confirm_email
-
-template confirm_email => sub {
-    Jifty->api->allow('ConfirmEmail');
-    new_action(
-        moniker => 'confirm_email',
-        class   => 'Wifty::Action::ConfirmEmail'
-    )->run;
-    redirect("/");
 };
 
 1;
