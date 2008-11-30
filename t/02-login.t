@@ -33,18 +33,21 @@ sub try_login {
     {
         local $Test::Builder::Level = $Test::Builder::Level;
         $Test::Builder::Level++;
-        $mech->fill_in_action_ok('loginbox', email => $user, password => $pass);
+        $mech->fill_in_action_ok(
+            $mech->moniker_for("Wifty::Action::Login"),
+            email => $user, password => $pass
+        );
         $mech->submit_html_ok();
     }
 }
 
 # Try logging in with a bad user
 try_login($mech, 'baduser@localhost', 'notmypassword');
-$mech->content_contains('No account has that email address', "Login failed with bad username");
+$mech->content_contains("It doesn't look like there's an account by that name", "Login failed with bad username");
 
 # With a blank password
 try_login($mech, 'someuser@localost', '');
-$mech->content_contains('need to fill in this field','Login fails with no password');
+$mech->content_contains('Please fill in this field','Login fails with no password');
 
 # With the wrong password
 try_login($mech, 'someuser@localhost', 'badmemory');
