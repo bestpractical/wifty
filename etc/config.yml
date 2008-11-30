@@ -1,4 +1,7 @@
+---
 framework:
+  ConfigFileVersion: 4
+
   AdminMode: 0
   ApplicationName: Wifty
   AdminEmail: 'wifty@example.com'
@@ -11,7 +14,12 @@ framework:
     Password: ''
     RequireSSL: 0
   Plugins:
-    - Login: {}
+    - SkeletonApp: {}
+    - CompressedCSSandJS: {}
+    - User: {}
+    - Authentication::Password:
+        login_by: email
+
   Mailer: IO
   MailerArgs:
     - %log/mail.log%
