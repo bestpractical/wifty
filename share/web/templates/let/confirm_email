@@ -1,8 +1,0 @@
-<%init>
-Jifty->api->allow( 'ConfirmEmail'); 
-Jifty->web->new_action(
-    moniker => 'confirm_email',
-    class   => 'Wifty::Action::ConfirmEmail',
-)->run;
-Jifty->web->redirect("/");
-</%init>
