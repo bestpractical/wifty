@@ -35,6 +35,9 @@ on qr{^/(view|edit)/(.*)}, run {
     my $page = Wifty::Model::Page->new();
     $page->load_by_cols( name => $name );
     Jifty->web->redirect( '/create/' . $name ) unless ( $page->id );
+
+    setup_page_nav($name, $rev);
+
     my $revision = Wifty::Model::Revision->new();
     $revision->load_by_cols( page => $page->id, id => $rev ) if ($rev);
     set page => $page;
@@ -53,6 +56,8 @@ on 'history/*', run {
     my $page = Wifty::Model::Page->new();
     $page->load_by_cols( name => $name );
     redirect( '/create/' . $name ) unless ( $page->id );
+
+    setup_page_nav($name);
 
     my $revisions = $page->revisions;
     $revisions->order_by( column => 'id', order => 'desc');
@@ -95,5 +100,15 @@ on 'recent*', run {
     set pages => $pages;
 };
 
+sub setup_page_nav {
+    my ($page, $rev) = @_;
+
+    my $subpath =  $page . ($rev ? "/$rev" : '');
+    my $top = Jifty->web->page_navigation;
+    $top->child( View => url => '/view/'.$subpath);
+    $top->child( Edit => url => '/edit/'.$subpath);
+    $top->child( History => url => '/history/'.$page);
+    $top->child( Latest => url => '/view/'.$page) if $rev;
+}
 
 1;

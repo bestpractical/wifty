@@ -2,7 +2,6 @@
 $page
 $revisions
 </%args>
-<& /_elements/page_nav, page => $page->name &>
 <&|/_elements/wrapper, title => $revisions->count ." revisions of " .$page->name &>
 <dl id="history">
 % while (my $rev = $revisions->next) {

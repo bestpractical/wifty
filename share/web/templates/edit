@@ -6,7 +6,6 @@ $viewer
 <%init>
 my $can_edit = $page->current_user_can('update');
 </%init>
-<&/_elements/page_nav, page => $page->name, rev => $revision->id &>
 <&|/_elements/wrapper, title => 'Edit: '.$page->name . ($revision->id ? " as of ".$revision->created : ''), id => "update"  &>
 <% Jifty->web->form->start %>
 <div class="form_wrapper">
