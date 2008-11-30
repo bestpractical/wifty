@@ -6,6 +6,13 @@ under '/', run {
     Jifty->api->deny('ConfirmEmail');
 };
 
+before '*', run {
+    my $top = Jifty->web->navigation;
+    $top->child( Home   => url => "/", sort_order => 1 );
+    $top->child( Recent => url => "/recent", label => "Recent Changes", sort_order => 2 );
+    $top->child( Search => url => "/search", label => "Search", sort_order => 3 );
+};
+
 # Default page
 on '/', run {
     redirect( '/view/HomePage');
