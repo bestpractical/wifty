@@ -1,6 +1,0 @@
-<%args>
-$pages
-</%args>
-<&|/_elements/wrapper, title => 'Updated this week' &>
-<& /_elements/page_list, pages => $pages, id => 'recentupdates' &>
-</&>

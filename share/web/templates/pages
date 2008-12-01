@@ -1,6 +1,0 @@
-<%args>
-$pages
-</%args>
-<&|/_elements/wrapper, title => 'These are the pages on your wiki!' &>
-<& /_elements/page_list, pages => $pages, id => 'allpages' &>
-</&>
