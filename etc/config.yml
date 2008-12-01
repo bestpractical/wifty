@@ -29,9 +29,14 @@ framework:
     StaticRoot: share/web/static
     TemplateRoot: share/web/templates
 application:
-#  RequireAuth: 1
+  # name of this wiki
   WikiName: A Wiki
-  Formatter: Markdown
+
+  # can anonymous users change wiki?
+  RequireAuth: 1
+
   # The formatter options are "Markdown" and "Kwiki"
-  # Logo: http://svk.bestpractical.com/svk-logo.png
+  Formatter: Markdown
+
   # The logo points to the url to a logo image
+  # Logo: http://www.bestpractical.com/images/svk-logo.png
