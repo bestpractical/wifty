@@ -19,12 +19,15 @@ sub friendly_name {
 sub current_user_can {
     my $self = shift;
     my $type = shift;
+    my $column = shift;
 
     if ( $type eq 'read' ) {
-        return 1;
+        return 1 if $column eq 'name';
+        my $cu = $self->current_user;
+        return 1 if $self->id && ($cu->id||0) == $self->id;
     }
 
-    return $self->SUPER::current_user_can($type, @_);
+    return $self->SUPER::current_user_can($type, $column, @_);
 }
 
 1;
