@@ -11,7 +11,7 @@ template 'view' => page {
         ? _('%1 as of %2', $page->name, $revision->created)
         : $page->name;
     { title is $title }
-    show( 'diff', page => $page, to => $revision ) if $rev;
+    show( 'diff/with_nav', page => $page, to => $revision ) if $rev;
     render_param($viewer => 'content', label => '', render_mode => 'read');
 };
 
@@ -248,21 +248,55 @@ private template page_list => sub {
     };
 };
 
-private template diff => sub {
-    my ($page, $from, $to) = get(qw(page from to));
+template 'helpers/diff' => sub {
+    my ($from, $to, $show) = get(qw(from to show));
+    hyperlink
+        label => $show? _('hide diff') : _('show diff'),
+        onclick => {
+            refresh_self => 1,
+            args => {
+                show => !$show,
+                from => $from,
+                to => $to
+            },
+        },
+    ;
+    if ( $show ) {
+        # XXX: check why show(x, key => $value, key => $value)
+        # doesn't work 
+        set(
+            to => Wifty::Model::Revision->load_by_cols(id => $to),
+            from => Wifty::Model::Revision->load_by_cols(id => $from),
+        );
+        show('/diff');
+    }
+};
 
-    $to ||= $page->revisions->last;
-    $from ||= $to->previous || Wifty::Model::Revision->new;
-
-    my $before = $to->previous;
-    my $after  = $to->next;
+private template 'diff' => sub {
+    my ($from, $to) = get(qw(from to));
+    if ( $to && !$from ) {
+        $from = $to->previous;
+    }
+    elsif ( !$to && $from ) {
+        $to = $from->next;
+    }
 
     use Text::Diff ();
     my $diff = Text::Diff::diff(
-        \( $from->content ),
-        \( $to->content ),
+        \( $from? $from->content : '' ),
+        \( $to ? $to->content : '' ),
         { STYLE => 'Text::Diff::HTML' }
     );
+    pre {{ class is 'diff' } outs_raw($diff) };
+};
+
+private template 'diff/with_nav' => sub {
+    my ($page, $from, $to) = get(qw(page from to));
+
+    $to ||= $page->revisions->last;
+
+    my $before = $to->previous;
+    my $after  = $to->next;
 
     div {{ class is 'revision_nav' }
         if ($before) {
@@ -283,7 +317,8 @@ private template diff => sub {
             };
         }
     };
-    pre {{ class is 'diff' } outs_raw($diff) };
+    set(to => $to);
+    show('diff');
     hr {}
 };
 
