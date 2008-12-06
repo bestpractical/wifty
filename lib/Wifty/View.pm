@@ -80,21 +80,24 @@ template history => page {
     $revisions->do_search; # avoid count+fetch
     { title is $revisions->count . " revisions of " . $page->name }
 
-    dl { { id is 'history' }
-        while ( my $rev = $revisions->next ) {
-            dt {
-                hyperlink(
-                    label => $rev->created,
-                    url   => '/view/' . $page->name . '/' . $rev->id
-                );
-                if ( $rev->created_by->id ) {
-                    '(' . $rev->created_by->name . ')';
-                } else {
-                    '(Anonymous)';
-                }
-            };
-            dd { length( $rev->content ) . ' bytes' };
-        }
+    ul { { id is 'history' }
+        while ( my $rev = $revisions->next ) { li {
+            hyperlink(
+                label => $rev->created,
+                url   => '/view/' . $page->name . '/' . $rev->id
+            );
+            if ( $rev->created_by->id ) {
+                outs(' ', '(' . $rev->created_by->name . ')');
+            } else {
+                outs(' ', _('(Anonymous)'));
+            }
+            outs( ' ', _('%1 bytes', length $rev->content ) );
+            render_region(
+                'revision-'. $rev->id .'-diff',
+                path => '/helpers/diff',
+                defaults => { page => $page->id, to => $rev->id },
+            )
+        } }
     };
 };
 
