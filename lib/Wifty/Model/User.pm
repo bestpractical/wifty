@@ -10,4 +10,15 @@ use Jifty::Plugin::User::Mixin::Model::User;
 # import columns: password, auth_token
 use Jifty::Plugin::Authentication::Password::Mixin::Model::User;
 
+sub current_user_can {
+    my $self = shift;
+    my $type = shift;
+
+    if ( $type eq 'read' ) {
+        return 1;
+    }
+
+    return $self->SUPER::current_user_can($type, @_);
+}
+
 1;
