@@ -322,7 +322,7 @@ private template 'diff/with_nav' => sub {
         }
     };
     set(to => $to);
-    show('diff');
+    show('/diff');
     hr {}
 };
 
