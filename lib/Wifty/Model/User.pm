@@ -10,6 +10,12 @@ use Jifty::Plugin::User::Mixin::Model::User;
 # import columns: password, auth_token
 use Jifty::Plugin::Authentication::Password::Mixin::Model::User;
 
+sub friendly_name {
+    my $self = shift;
+    return _('Anonymous') unless $self->id;
+    return $self->name;
+}
+
 sub current_user_can {
     my $self = shift;
     my $type = shift;

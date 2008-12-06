@@ -86,11 +86,7 @@ template history => page {
                 label => $rev->created,
                 url   => '/view/' . $page->name . '/' . $rev->id
             );
-            if ( $rev->created_by->id ) {
-                outs(' ', '(' . $rev->created_by->name . ')');
-            } else {
-                outs(' ', _('(Anonymous)'));
-            }
+            outs( ' (' . $rev->created_by->friendly_name . ')' );
             outs( ' ', _('%1 bytes', length $rev->content ) );
             render_region(
                 'revision-'. $rev->id .'-diff',
@@ -238,15 +234,7 @@ private template page_list => sub {
             };
             dd {
                 outs( $page->updated );
-                outs(
-                    ' - ('
-                        . (
-                          $page->updated_by->id
-                        ? $page->updated_by->name
-                        : _('Anonymous')
-                        )
-                        . ')'
-                );
+                outs( ' - ('. $page->updated_by->friendly_name .')' );
             };
         }
     };
