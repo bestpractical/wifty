@@ -77,6 +77,7 @@ template no_such_page => page {
 
 template history => page {
     my ( $page, $revisions ) = get(qw(page revisions));
+    $revisions->do_search; # avoid count+fetch
     { title is $revisions->count . " revisions of " . $page->name }
 
     dl { { id is 'history' }
