@@ -33,25 +33,23 @@ on '/create/*', run {
 
 # View or edit a page
 on qr{^/(view|edit)/(.*)}, run {
-    my ( $name, $rev );
     my $page_name = $1;
-    if ( $2 =~ qr{^(.*?)(?:/(\d+))?$} ) {
-        $name = $1;
-        $rev  = $2;
-    }
+    my ( $name, $rev ) = ($2 =~ qr{^(.*?)(?:/(\d+))?$});
+
     my $page = Wifty::Model::Page->new();
     $page->load_by_cols( name => $name );
-    Jifty->web->redirect( '/create/' . $name ) unless ( $page->id );
+    Jifty->web->redirect( '/create/' . $name )
+        unless $page->id;
 
-    setup_page_nav($name, $rev);
+    $rev = $page->revision($rev);
 
-    my $revision = Wifty::Model::Revision->new();
-    $revision->load_by_cols( page => $page->id, id => $rev ) if ($rev);
+    setup_page_nav($page_name, $page, $rev);
+
     set page => $page;
-    set revision => $revision;
+    set revision => $rev || new Wifty::Model::Revision;
     my $viewer = Jifty->web->new_action( class => 'UpdatePage', record => $page );
-    if($rev) {
-        $viewer->argument_value(content => $revision->content);
+    if ( $rev ) {
+        $viewer->argument_value(content => $rev->content);
     }
     set viewer => $viewer;
     show("/$page_name");
@@ -64,7 +62,7 @@ on 'history/*', run {
     $page->load_by_cols( name => $name );
     redirect( '/create/' . $name ) unless ( $page->id );
 
-    setup_page_nav($name);
+    setup_page_nav('view', $page);
 
     my $revisions = $page->revisions;
     $revisions->order_by( column => 'id', order => 'desc');
@@ -108,14 +106,23 @@ on 'recent*', run {
 };
 
 sub setup_page_nav {
-    my ($page, $rev) = @_;
+    my ($prefix, $page, $rev) = @_;
 
-    my $subpath =  $page . ($rev ? "/$rev" : '');
+    my $name = $page->name;
+
+    my $subpath = $name;
+    $subpath .= '/'. $rev->id if $rev;
     my $top = Jifty->web->page_navigation;
-    $top->child( View => url => '/view/'.$subpath);
-    $top->child( Edit => url => '/edit/'.$subpath);
-    $top->child( History => url => '/history/'.$page);
-    $top->child( Latest => url => '/view/'.$page) if $rev;
+    $top->child( View => url => '/view/'. $subpath);
+    $top->child( Edit => url => '/edit/'. $subpath);
+    if ( my $prev = ($rev? $rev : $page->revisions->last)->previous ) {
+        $top->child( Older => url => join '/', '', $prefix, $name, $prev->id );
+    }
+    $top->child( History => url => '/history/'. $name);
+    if ( $rev and my $next = $rev->next ) {
+        $top->child( Newer => url => join '/',  '', $prefix, $name, $next->id );
+        $top->child( Latest => url => join '/', '', $prefix, $name );
+    }
 }
 
 1;
