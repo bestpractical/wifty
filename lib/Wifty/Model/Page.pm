@@ -104,6 +104,18 @@ sub _set {
     return ( $val, $msg );
 }
 
+sub revision {
+    my $self = shift;
+    my $rev = shift;
+    return undef unless $self->id;
+    return undef unless $rev;
+
+    my $res = new Wifty::Model::Revision;
+    $res->load_by_cols( page => $self->id, id => $rev );
+    return undef unless $res->id;
+    return $res;
+}
+
 
 =head2 current_user_can ACTION
 
