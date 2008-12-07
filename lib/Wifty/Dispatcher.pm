@@ -8,9 +8,9 @@ under '/', run {
 
 before '*', run {
     my $top = Jifty->web->navigation;
-    $top->child( Home   => url => "/", sort_order => 1 );
-    $top->child( Recent => url => "/recent", label => "Recent Changes", sort_order => 2 );
-    $top->child( Search => url => "/search", label => "Search", sort_order => 3 );
+    $top->child( Home   => url => "/", label => _("Home") );
+    $top->child( Recent => url => "/recent", label => _("Recent Changes") );
+    $top->child( Search => url => "/search", label => _("Search") );
 };
 
 # Default page
@@ -113,15 +113,27 @@ sub setup_page_nav {
     my $subpath = $name;
     $subpath .= '/'. $rev->id if $rev;
     my $top = Jifty->web->page_navigation;
-    $top->child( View => url => '/view/'. $subpath);
-    $top->child( Edit => url => '/edit/'. $subpath);
+    $top->child( View => url => '/view/'. $subpath, label => _('View') );
+    $top->child( Edit => url => '/edit/'. $subpath, label => _('Edit') );
     if ( my $prev = ($rev? $rev : $page->revisions->last)->previous ) {
-        $top->child( Older => url => join '/', '', $prefix, $name, $prev->id );
+        $top->child(
+            Older => label => _('Previous Version'),
+            url => join '/', '', $prefix, $name, $prev->id
+        );
     }
-    $top->child( History => url => '/history/'. $name);
+    $top->child(
+        History => label => _('History'),
+        url => '/history/'. $name
+    );
     if ( $rev and my $next = $rev->next ) {
-        $top->child( Newer => url => join '/',  '', $prefix, $name, $next->id );
-        $top->child( Latest => url => join '/', '', $prefix, $name );
+        $top->child(
+            Newer => label => _('Next Version'),
+            url => join '/',  '', $prefix, $name, $next->id
+        );
+        $top->child(
+            Latest => label => _('Latest'),
+            url => join '/', '', $prefix, $name
+        );
     }
 }
 
