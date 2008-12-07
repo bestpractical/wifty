@@ -1,0 +1,116 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Ruslan Zakirov <ruz@bestpractical.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: lib/Wifty/View-not-ready-yet.pm:59
+msgid " name is 'robots', content is 'all' "
+msgstr ""
+
+#: lib/Wifty/View-not-ready-yet.pm:58
+msgid ""
+" xmlns is \"http://www.w3.org/1999/xhtml\", xml__lang is \"en\" }\n"
+"        head {\n"
+"            meta {{ http_equiv is \"content-type\", content is \"text/html; charset=utf-8\" "
+msgstr ""
+
+#: lib/Wifty/View.pm:10
+#. ($page->name, $revision->created)
+msgid "%1 as of %2"
+msgstr "%1 от %2"
+
+#: lib/Wifty/View.pm:88
+#. (length $rev->content)
+msgid "%1 bytes"
+msgstr "%1 байт"
+
+#: lib/Wifty/Model/User.pm:15
+msgid "Anonymous"
+msgstr "Аноним"
+
+#: lib/Wifty/View.pm:21
+msgid "Edit page %1"
+msgstr "Изменить страницу %1"
+
+#: lib/Wifty/View.pm:20
+#. ($page->name, $revision->created)
+msgid "Edit page %1 as of %2"
+msgstr "Изменить страницу %1 от %2"
+
+#: lib/Wifty/View.pm:116
+msgid "Find pages containing:"
+msgstr "Найти страницы содержащие:"
+
+#: lib/Wifty/Dispatcher.pm:125
+msgid "History"
+msgstr "История"
+
+#: lib/Wifty/Dispatcher.pm:134
+msgid "Latest"
+msgstr "Последняя"
+
+#: lib/Wifty/View.pm:46
+#. ($page)
+msgid "New page '%1'"
+msgstr "Новая страница '%1'"
+
+#: lib/Wifty/Dispatcher.pm:130
+msgid "Next Version"
+msgstr "Следующая Версия"
+
+#: lib/Wifty/View.pm:305
+msgid "Next revision"
+msgstr ""
+
+#: lib/Wifty/View.pm:66
+#. ($page)
+msgid "No '%1' page"
+msgstr "Нет страницы '%1'"
+
+#: lib/Wifty/Dispatcher.pm:120
+msgid "Previous Version"
+msgstr "Предыдущая версия"
+
+#: lib/Wifty/View.pm:296
+msgid "Previous revision"
+msgstr ""
+
+#: lib/Wifty/Dispatcher.pm:12
+msgid "Recent Changes"
+msgstr "Последние Изменения"
+
+#: lib/Wifty/View.pm:107
+msgid "These are the pages on your wiki!"
+msgstr "Все страницы на этой wiki!"
+
+#: lib/Wifty/View.pm:100
+msgid "Updated this week"
+msgstr "Обновлены на этой неделе"
+
+#: lib/Wifty/Dispatcher.pm:116
+msgid "View"
+msgstr "Просмотреть"
+
+#: lib/Wifty/View.pm:159
+msgid "Wiki Syntax Help"
+msgstr "Справка по wiki-синтаксису"
+
+#: lib/Wifty/View.pm:244
+msgid "hide diff"
+msgstr "скрыть изменения"
+
+#: lib/Wifty/View.pm:244
+msgid "show diff"
+msgstr "показать изменения"
