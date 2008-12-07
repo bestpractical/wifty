@@ -6,12 +6,10 @@ use Jifty::View::Declare -base;
 
 template 'view' => page {
     my ( $page, $revision, $viewer ) = get(qw(page revision viewer));
-    my $rev = $revision->id;
-    my $title = $rev
+    my $title = $revision->id
         ? _('%1 as of %2', $page->name, $revision->created)
         : $page->name;
     { title is $title }
-    show( 'diff/with_nav', page => $page, to => $revision ) if $rev;
     render_param($viewer => 'content', label => '', render_mode => 'read');
 };
 
@@ -266,10 +264,10 @@ template 'helpers/diff' => sub {
 
 private template 'diff' => sub {
     my ($from, $to) = get(qw(from to));
-    if ( $to && !$from ) {
+    if ( $to && !($from && $from->id) ) {
         $from = $to->previous;
     }
-    elsif ( !$to && $from ) {
+    elsif ( !($to && $to->id) && $from ) {
         $to = $from->next;
     }
 
