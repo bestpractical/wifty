@@ -9,12 +9,20 @@ use base qw/Wifty::Record/;
 use Jifty::DBI::Schema;
 
 use Jifty::Record schema {
-column page  => refers_to Wifty::Model::Page;
-
-column content => type is 'text', render_as 'Wifty::Form::Field::WikiPage';
-
-column created => type is 'timestamp';
-column created_by => refers_to Wifty::Model::User, since '0.0.20';
+    column page =>
+        refers_to Wifty::Model::Page
+    ;
+    column content =>
+        type is 'text',
+        render_as 'Wifty::Form::Field::WikiPage'
+    ;
+    column created =>
+        type is 'timestamp'
+    ;
+    column created_by =>
+        refers_to Wifty::Model::User,
+        since '0.0.20'
+    ;
 };
 
 
@@ -77,7 +85,7 @@ sub next {
         quote_value    => 0,
         case_sensitive => 1
     );
-    $revisions->order_by( { column => 'id' } );
+    $revisions->order_by( { column => 'id', order => 'asc' } );
     $revisions->rows_per_page(1);
     return $revisions->first;
 }
