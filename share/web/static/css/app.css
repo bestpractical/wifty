@@ -51,12 +51,22 @@ form .submit_button input {
 * html .pagelist dt,
 * html .pagelist dd { position: relative; }
 
-#history dd {
+#history {
+    margin-left: 0em;
+    padding-left: 1em;
+    list-style-type: none;
+}
+
+#history li {
     font-size: 0.95em;
-    color: #444;
-    margin-left: 2em;
+    margin-left: 0em;
     padding-left: 0;
     margin-bottom: 0.5em;
+}
+
+#history div.jifty-region {
+    display: inline;
+    margin-left: 0.5em;
 }
 
 hr {
