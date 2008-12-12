@@ -249,20 +249,14 @@ template 'helpers/diff' => sub {
 
 private template 'diff' => sub {
     my ($from, $to) = get(qw(from to));
-    if ( $to && !($from && $from->id) ) {
-        $from = $to->previous;
+    if ( $to && $to->id ) {
+        pre {{ class is 'diff' } outs_raw( $to->diff_from( $from ) ) };
     }
-    elsif ( !($to && $to->id) && $from ) {
-        $to = $from->next;
+    elsif ( $from && $from->id ) {
+        pre {{ class is 'diff' } outs_raw( $from->diff_to( $to ) ) };
+    } else {
+        die "illegal arguments for diff";
     }
-
-    use Text::Diff ();
-    my $diff = Text::Diff::diff(
-        \( $from? $from->content : '' ),
-        \( $to ? $to->content : '' ),
-        { STYLE => 'Text::Diff::HTML' }
-    );
-    pre {{ class is 'diff' } outs_raw($diff) };
 };
 
 private template 'diff/with_nav' => sub {
