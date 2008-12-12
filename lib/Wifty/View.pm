@@ -4,6 +4,9 @@ use strict;
 package Wifty::View;
 use Jifty::View::Declare -base;
 
+require Wifty::View::Feeds;
+alias Wifty::View::Feeds under 'feeds/';
+
 template 'view' => page {
     my ( $page, $revision, $viewer ) = get(qw(page revision viewer));
     my $title = $revision->id
