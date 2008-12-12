@@ -93,17 +93,24 @@ on 'search', run {
 };
 
 # Show recent edits
+under 'feeds/atom/recent', run {
+    set pages => recent_changes();
+};
 on 'recent*', run {
+    set pages => recent_changes();
+};
+
+sub recent_changes {
     my $then = DateTime->from_epoch( epoch => ( time - ( 86400 * 7 ) ) );
     my $pages = Wifty::Model::PageCollection->new();
     $pages->limit(
         column   => 'updated',
         operator => '>',
-        value    => $then->ymd
+        value    => $then->ymd,
     );
     $pages->order_by( column => 'updated', order => 'desc' );
-    set pages => $pages;
-};
+    return $pages;
+}
 
 sub setup_page_nav {
     my ($prefix, $page, $rev) = @_;
