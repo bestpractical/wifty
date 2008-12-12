@@ -47,11 +47,7 @@ on qr{^/(view|edit)/(.*)}, run {
 
     set page => $page;
     set revision => $rev || new Wifty::Model::Revision;
-    my $viewer = Jifty->web->new_action( class => 'UpdatePage', record => $page );
-    if ( $rev ) {
-        $viewer->argument_value(content => $rev->content);
-    }
-    set viewer => $viewer;
+    set viewer => $rev? $rev->viewer: $page->viewer;
     show("/$page_name");
 };
 
