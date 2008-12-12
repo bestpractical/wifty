@@ -85,6 +85,11 @@ sub set_content {
     return ( $val, $msg );
 }
 
+sub viewer {
+    my $self = shift;
+    return Jifty->web->new_action( class => 'UpdatePage', record => $self );
+}
+
 sub _set {
     my $self = shift;
     my ( $val, $msg ) = $self->SUPER::_set(@_);

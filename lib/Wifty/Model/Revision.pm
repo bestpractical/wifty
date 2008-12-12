@@ -90,6 +90,42 @@ sub next {
     return $revisions->first;
 }
 
+sub diff_from {
+    my $to = shift;
+    my $from = shift;
+    unless ( $from && $from->id ) {
+        $from = $to->previous;
+    }
+    return $to->_diff( $from, $to, @_ );
+}
+
+sub diff_to {
+    my $from = shift;
+    my $to = shift;
+    unless ( $to && $to->id ) {
+        $to = $from->next;
+    }
+    return $from->_diff( $from, $to, @_ );
+}
+
+sub _diff {
+    my $self = shift;
+    my ($from, $to, %opt) = @_;
+    require Text::Diff;
+    return Text::Diff::diff(
+        \( $from? $from->content : '' ),
+        \( $to ? $to->content : '' ),
+        { STYLE => 'Text::Diff::HTML', %opt }
+    );
+}
+
+sub viewer {
+    my $self = shift;
+    my $viewer = $self->page->viewer;
+    $viewer->argument_value( content => $self->content );
+    return $viewer;
+}
+
 =head2 current_user_can RIGHT
 
 We're using L<Jifty::RightsFrom> to pass off ACL decisions to this
