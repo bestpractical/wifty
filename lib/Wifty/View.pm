@@ -130,24 +130,6 @@ private template 'search_box' => sub {
     } };
 };
 
-private template 'menu' => sub {
-    my $wikiname = Jifty->config->app('WikiName') || "Wifty";
-    h1 { attr { id is 'wikiname' }
-        Jifty->web->link( url => "/", label => _($wikiname) )
-    }
-    div { attr { id => "navigation" };
-        Jifty->web->navigation->render_as_menu;
-    };
-};
-
-private template 'heading_in_wrapper' => sub {
-    h1 { attr { class => 'title' }; outs_raw(get('title')) };
-    Jifty->web->page_navigation->render_as_menu;
-#    show('/search_box');
-    hr { {class is 'clear'} }
-};
-
-
 private template markup => sub {
     return undef unless Jifty->config->app('Formatter') eq 'Markdown';
 
