@@ -19,6 +19,7 @@ framework:
     - User: {}
     - Authentication::Password:
         login_by: email
+    - ViewDeclarePage: {}
 
   Mailer: IO
   MailerArgs:
