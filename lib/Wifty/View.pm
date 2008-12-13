@@ -99,25 +99,14 @@ template history => page {
 };
 
 template recent => page {
-    my ($pages) = get(qw(pages));
-    { title is _('Updated this week') }
-    show( 'page_list', pages => $pages, id => 'recentupdates' );
+    my ($pages, $title, $type) = get(qw(pages title type));
 
-    add rel "alternate",
-        type => "application/atom+xml",
-        title => _('Updated this week') .' '. _('(full content)'),
-        href => '/feeds/atom/recent',
-    ;
-    add rel "alternate",
-        type => "application/atom+xml",
-        title => _('Updated this week') .' '. _('(headlines)'),
-        href => '/feeds/atom/recent/headlines',
-    ;
-    add rel "alternate",
-        type => "application/atom+xml",
-        title => _('Updated this week') .' '. _('(diffs)'),
-        href => '/feeds/atom/recent/diffs',
-    ;
+    title is $title;
+
+    set( id => 'recent-'. $type ); show( 'page_list' );
+
+    set( path => "recent/$type" );
+    show('/feeds/pages_links');
 };
 
 template pages => page {

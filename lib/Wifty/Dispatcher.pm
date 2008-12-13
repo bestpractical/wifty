@@ -8,9 +8,10 @@ under '/', run {
 
 before '*', run {
     my $top = Jifty->web->navigation;
-    $top->child( Home   => url => "/", label => _("Home") );
-    $top->child( Recent => url => "/recent", label => _("Recent Changes") );
-    $top->child( Search => url => "/search", label => _("Search") );
+    $top->child( Home   => url => "/",                 label => _("Home") );
+    $top->child( Recent => url => "/recent/changes",   label => _("Recent Changes") );
+    $top->child( New    => url => "/recent/additions", label => _("New") );
+    $top->child( Search => url => "/search",           label => _("Search") );
 };
 
 # Default page
@@ -88,25 +89,30 @@ on 'search', run {
     set pages => $collection;
 };
 
-# Show recent edits
+# Show recent
+
+# backwards compat
+on '/recent', run {
+    redirect('/recent/changes');
+};
+
 under 'feeds/atom/recent', run {
     set pages => recent_changes();
 };
-on 'recent*', run {
-    set pages => recent_changes();
+on qr{^/recent/(.+)}, run {
+    my $type = $1;
+    if ( $type eq 'changes' ) {
+        set title => _('Updated this week');
+        set pages => Wifty::Model::PageCollection->recently_updated;
+    } elsif ( $type eq 'additions' ) {
+        set title => _('Created this week');
+        set pages => Wifty::Model::PageCollection->recently_created;
+    } else {
+        redirect('/recent/changes');
+    }
+    set( type => $type );
+    show('/recent');
 };
-
-sub recent_changes {
-    my $then = DateTime->from_epoch( epoch => ( time - ( 86400 * 7 ) ) );
-    my $pages = Wifty::Model::PageCollection->new();
-    $pages->limit(
-        column   => 'updated',
-        operator => '>',
-        value    => $then->ymd,
-    );
-    $pages->order_by( column => 'updated', order => 'desc' );
-    return $pages;
-}
 
 sub setup_page_nav {
     my ($prefix, $page, $rev) = @_;
