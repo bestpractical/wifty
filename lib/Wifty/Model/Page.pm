@@ -30,6 +30,14 @@ column updated_by =>
     refers_to Wifty::Model::User,
     since '0.0.16';
 
+column created =>
+    type is 'timestamp',
+    since '0.0.21';
+
+column created_by =>
+    refers_to Wifty::Model::User,
+    since '0.0.21';
+
 column revisions =>
     refers_to Wifty::Model::RevisionCollection by 'page';
 };
@@ -38,8 +46,9 @@ sub create {
     my $self = shift;
     my %args = (@_);
     my $now  = DateTime->now();
-    $args{'updated'} = $now->ymd . " " . $now->hms;
-    $args{'updated_by'} = ( $self->current_user? $self->current_user->user_object : undef );
+    $args{'created'} = $args{'updated'} = $now->ymd . " " . $now->hms;
+    $args{'created_by'} = $args{'updated_by'}
+        = $self->current_user? $self->current_user->user_object : undef;
     my ($id) = $self->SUPER::create(%args);
     if ( $self->id ) {
         $self->_add_revision(%args);

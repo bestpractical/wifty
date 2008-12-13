@@ -10,7 +10,7 @@ framework:
     Driver: SQLite
     Host: localhost
     User: postgres
-    Version: 0.0.20
+    Version: 0.0.21
     Password: ''
     RequireSSL: 0
   Plugins:
