@@ -8,13 +8,38 @@ use Jifty::View::Declare::Helpers;
 sub render_page {
     my $self = shift;
 
+    my $wikiname = Jifty->config->app('WikiName') || "Wifty";
+
     if ( my $logo = Jifty->config->app('Logo') ) {
         div { attr { id is "logo" } 
             img { src is $logo, alt is '' }
         };
     }
 
-    return $self->SUPER::render_page( @_ );
+    Template::Declare->new_buffer_frame;
+    $self->instrument_content;
+    my $content = Template::Declare->end_buffer_frame->data;
+
+    div { attr { id is "header" }
+        div { attr { id is "wikiheader" }
+            $self->render_navigation;
+        }
+        div { attr { id is "pageheader" }
+            h1 { attr { id is "pagename" }; outs( $self->_title ) };
+            Jifty->web->page_navigation->render_as_menu;
+        }
+    };
+    $self->render_salutation;
+    hr { attr { class is 'clear' } };
+    
+    Jifty->web->render_messages;
+
+    div { attr { id is "content" };
+        outs_raw( $content );
+        hr { attr { class is 'clear' } };
+    };
+    $self->render_jifty_page_detritus;
+    return '';
 }
 
 sub render_navigation {
@@ -23,8 +48,16 @@ sub render_navigation {
     h1 { attr { id is 'wikiname' }
         Jifty->web->link( url => "/", label => _($wikiname) )
     };
-    return $self->SUPER::render_navigation( @_ );
+    $self->SUPER::render_navigation( @_ );
+    show('/search_box');
+    return '';
 }
+
+=head2 render_title_inhead
+
+Adds " - <wikiname>" after page title.
+
+=cut
 
 sub render_title_inhead {
     my $self = shift;
@@ -33,12 +66,6 @@ sub render_title_inhead {
     return $self->SUPER::render_title_inhead( $title .' - '. $wikiname );
 }
 
-sub render_title_inpage {
-    my $self = shift;
-    $self->SUPER::render_title_inpage( @_ );
-#    show('/search_box');
-    hr { {class is 'clear'} };
-    return '';
-}
+sub render_title_inpage { return '' }
 
 1;
