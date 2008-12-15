@@ -92,14 +92,8 @@ on 'search', run {
 # Show recent
 
 # backwards compat
-on '/recent', run {
-    redirect('/recent/changes');
-};
-
-under 'feeds/atom/recent', run {
-    set pages => recent_changes();
-};
-on qr{^/recent/(.+)}, run {
+on 'recent' => run { redirect('/recent/changes') };
+on qr{^/recent/(changes|additions)}, run {
     my $type = $1;
     if ( $type eq 'changes' ) {
         set title => _('Updated this week');
@@ -107,11 +101,30 @@ on qr{^/recent/(.+)}, run {
     } elsif ( $type eq 'additions' ) {
         set title => _('Created this week');
         set pages => Wifty::Model::PageCollection->recently_created;
-    } else {
-        redirect('/recent/changes');
     }
-    set( type => $type );
+    set type => $type;
     show('/recent');
+};
+
+on 'feeds/atom/recent' => run { redirect('/feeds/atom/recent/changes/headlines') };
+on qr{^/feeds/atom/recent/(changes|additions)(?:/(full|headlines|diff))?$} => run {
+    my $wikiname = Jifty->config->app('WikiName');
+    my $show = $1;
+    my $show_as = $2 || 'headlines';
+    my ($pages, $title);
+    if ( $show eq 'changes' ) {
+        $pages = Wifty::Model::PageCollection->recently_updated;
+        $title = $wikiname
+            ? _('Recently changed pages on %1 wiki', $wikiname)
+            : _('Recently changed pages on some wiki');
+    } else {
+        $pages = Wifty::Model::PageCollection->recently_created;
+        $title = $wikiname
+            ? _('Recently added pages on %1 wiki', $wikiname)
+            : _('Recently added pages on some wiki');
+    }
+    set( title => $title ); set( pages => $pages ); set( show_as => $show_as );
+    show('/feeds/atom/pages');
 };
 
 sub setup_page_nav {

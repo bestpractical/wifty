@@ -7,30 +7,31 @@ use Jifty::View::Declare -base;
 use XML::Atom::SimpleFeed;
 use Data::UUID;
 
-# XXX: don't know how to redispatch to private template
-# right from dispatcher
-template 'atom/recent' => sub {
-    set(type => 'full');
-    show('../atom');
-};
+private template 'pages_links' => sub {
+    my ($title, $path) = get(qw(title path));
 
-template 'atom/recent/diff' => sub {
-    set(type => 'diff');
-    show('../../atom');
-};
-
-template 'atom/recent/headlines' => sub {
-    set(type => 'headlines');
-    show('../../atom');
+    add rel "alternate",
+        type => "application/atom+xml",
+        title => $title .' '. _('(headlines)'),
+        href => "/feeds/atom/$path/headlines",
+    ;
+    add rel "alternate",
+        type => "application/atom+xml",
+        title => $title .' '. _('(full content)'),
+        href => "/feeds/atom/$path/full",
+    ;
+    add rel "alternate",
+        type => "application/atom+xml",
+        title => $title .' '. _('(diffs)'),
+        href => "/feeds/atom/$path/diffs",
+    ;
 };
 
 # XXX: id rendering is not correct
-private template 'atom' => sub {
-    my ($pages, $type) = get(qw(pages type));
-    my $wikiname = Jifty->config->app('WikiName');
-    my $title = $wikiname
-        ? _('Recently changed pages on %1 wiki', $wikiname)
-        : _('Recently changed pages on some wiki');
+# XXX: don't know how to dispatch to private template
+template 'atom/pages' => sub {
+    my ($pages, $title, $show_as) = get(qw(pages title show_as));
+    $show_as ||= 'headlines';
     my $feed = XML::Atom::SimpleFeed->new(
         title   => $title,
         link    => Jifty->web->url,
@@ -39,10 +40,10 @@ private template 'atom' => sub {
 
     while ( my $page = $pages->next ) {
         my $summary = '';
-        if ( !$type || $type eq 'full' ) {
+        if ( $show_as eq 'full' ) {
             $summary = $page->viewer->form_field('content')->wiki_content;
         }
-        elsif ( $type eq 'diff' ) {
+        elsif ( $show_as eq 'diff' ) {
             $summary = '<pre>'. $page->revisions->last->diff_from .'</pre>';
         }
 
