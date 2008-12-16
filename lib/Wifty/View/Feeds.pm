@@ -10,21 +10,24 @@ use Data::UUID;
 private template 'pages_links' => sub {
     my ($title, $path) = get(qw(title path));
 
-    add rel "alternate",
-        type => "application/atom+xml",
-        title => $title .' '. _('(headlines)'),
-        href => "/feeds/atom/$path/headlines",
-    ;
-    add rel "alternate",
-        type => "application/atom+xml",
-        title => $title .' '. _('(full content)'),
-        href => "/feeds/atom/$path/full",
-    ;
-    add rel "alternate",
-        type => "application/atom+xml",
-        title => $title .' '. _('(diffs)'),
-        href => "/feeds/atom/$path/diffs",
-    ;
+    ul { attr { class is 'atom-feeds' };
+        li { add rel "alternate",
+            type => "application/atom+xml",
+            title => $title .' '. _('(headlines)'),
+            href => "/feeds/atom/$path/headlines",
+        }
+        li { add rel "alternate",
+            type => "application/atom+xml",
+            title => $title .' '. _('(full content)'),
+            href => "/feeds/atom/$path/full",
+        }
+        li { add rel "alternate",
+            type => "application/atom+xml",
+            title => $title .' '. _('(diffs)'),
+            href => "/feeds/atom/$path/diffs",
+        }
+    };
+    return '';
 };
 
 # XXX: id rendering is not correct

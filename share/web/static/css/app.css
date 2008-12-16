@@ -122,3 +122,20 @@ hr {
     float: left;
 }
 
+ul.atom-feeds {
+    clear: both;
+    margin-left: 0em;
+    padding-left: 0em;
+    list-style-type: none;
+}
+
+ul.atom-feeds a img {
+    border: none;
+}
+
+ul.atom-feeds li {
+    margin-left: 1em;
+    padding-left: 0;
+    display: inline;
+}
+

@@ -68,4 +68,18 @@ sub render_title_inhead {
 
 sub render_title_inpage { return '' }
 
+sub render_link_inpage {
+    my $self = shift;
+    my %link = @_;
+    if ( ($link{rel}||'') eq 'alternate' && ($link{type}||'') eq 'application/atom+xml' ) {
+        a { attr { href => $link{'href'} };
+            img { attr {
+                src => '/static/images/feed-icon-14x14.png',
+                width => 14, heigth => 14,
+                title => $link{'title'}
+            } }
+        }
+    }
+    return '';
+}
 1;
