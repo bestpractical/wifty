@@ -9,20 +9,21 @@ alias Wifty::View::Feeds under 'feeds/';
 
 template 'view' => page {
     my ( $page, $revision, $viewer ) = get(qw(page revision viewer));
-    my $title = $revision->id
+    page_title is
+        $revision->id
         ? _('%1 as of %2', $page->name, $revision->created)
         : $page->name;
-    { title is $title }
+
     render_param($viewer => 'content', label => '', render_mode => 'read');
 };
 
 template 'edit' => page {
     my ( $page, $revision, $viewer ) = get(qw(page revision viewer));
 
-    my $title = $revision->id
+    page_title is
+        $revision->id
         ? _('Edit page %1 as of %2', $page->name, $revision->created)
         : _('Edit page %1');
-    { title is $title }
 
     my $can_edit = $page->current_user_can('update');
 
@@ -46,7 +47,8 @@ template 'edit' => page {
 template create => page {
     my ($action, $page) = get(qw(action page));
 
-    { title is _("New page '%1'", $page), id is 'create' };
+    id is 'create';
+    page_title is _("New page '%1'", $page);
 
     div {
         show('markup');
@@ -66,7 +68,7 @@ template create => page {
 template no_such_page => page {
     my ($page) = get(qw(page));
 
-    { title is _("No '%1' page", $page) }
+    page_title is _("No '%1' page", $page);
 
     p { 
         q{Unfortunately, you've tried to reach a page that doesn't exist }
@@ -79,7 +81,8 @@ template no_such_page => page {
 template history => page {
     my ( $page, $revisions ) = get(qw(page revisions));
     $revisions->do_search; # avoid count+fetch
-    { title is $revisions->count . " revisions of " . $page->name }
+
+    page_title is _('%1 revision(s) of %2', $revisions->count, $page->name);
 
     ul { { id is 'history' }
         while ( my $rev = $revisions->next ) { li {
@@ -101,7 +104,7 @@ template history => page {
 template recent => page {
     my ($pages, $title, $type) = get(qw(pages title type));
 
-    title is $title;
+    page_title is $title;
 
     set( id => 'recent-'. $type ); show( 'page_list' );
 
@@ -111,13 +114,16 @@ template recent => page {
 
 template pages => page {
     my ($pages ) = get(qw(pages));
-    { title is _('These are the pages on your wiki!') }
+
+    page_title is _('These are the pages on your wiki!');
 
     show( 'page_list', pages => $pages, id => 'allpages' );
 };
 
 template search => page {
     my ( $pages, $search ) = get(qw(pages search));
+
+    page_title is _('Search');
 
     form { div { { id is "searchbox", class is 'inline' }
         render_param $search => 'contains', label => _('Find pages containing:');
