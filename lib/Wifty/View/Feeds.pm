@@ -46,7 +46,7 @@ template 'atom/pages' => sub {
         if ( $show_as eq 'full' ) {
             $summary = $page->viewer->form_field('content')->wiki_content;
         }
-        elsif ( $show_as eq 'diff' ) {
+        elsif ( $show_as eq 'diff' or $show_as eq 'diffs' ) {
             $summary = '<pre>'. $page->revisions->last->diff_from .'</pre>';
         }
 
