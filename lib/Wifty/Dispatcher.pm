@@ -107,7 +107,7 @@ on qr{^/recent/(changes|additions)}, run {
 };
 
 on 'feeds/atom/recent' => run { redirect('/feeds/atom/recent/changes/headlines') };
-on qr{^/feeds/atom/recent/(changes|additions)(?:/(full|headlines|diff))?$} => run {
+on qr{^/feeds/atom/recent/(changes|additions)(?:/(full|headlines?|diffs?))?$} => run {
     my $wikiname = Jifty->config->app('WikiName');
     my $show = $1;
     my $show_as = $2 || 'headlines';
