@@ -30,7 +30,6 @@ private template 'pages_links' => sub {
     return '';
 };
 
-# XXX: id rendering is not correct
 # XXX: don't know how to dispatch to private template
 template 'atom/pages' => sub {
     my ($pages, $title, $show_as) = get(qw(pages title show_as));
@@ -38,22 +37,24 @@ template 'atom/pages' => sub {
     my $feed = XML::Atom::SimpleFeed->new(
         title   => $title,
         link    => Jifty->web->url,
-        id      => 'urn:uuid:' . Data::UUID->new->create_str()
     );
 
     while ( my $page = $pages->next ) {
+        my $last_rev = $page->revisions->last;
         my $summary = '';
         if ( $show_as eq 'full' ) {
             $summary = $page->viewer->form_field('content')->wiki_content;
         }
         elsif ( $show_as eq 'diff' or $show_as eq 'diffs' ) {
-            $summary = '<pre>'. $page->revisions->last->diff_from .'</pre>';
+            $summary = {
+                content => $last_rev->diff_from,
+                type => 'xhtml',
+            };
         }
 
         $feed->add_entry(
-            id      => 'urn:uuid:' . Data::UUID->new->create_str(),
-            link    => Jifty->web->url . '/view/' . $page->name,
             title   => $page->name,
+            link    => Jifty->web->url . '/view/' . $page->name .'/'. $last_rev->id,
             author  => $page->updated_by->friendly_name,
             updated => $page->updated,
             summary => $summary,
