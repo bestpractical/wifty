@@ -1,20 +1,25 @@
 ---
 framework:
   ConfigFileVersion: 4
-
-  AdminMode: 0
+  
   ApplicationName: Wifty
   AdminEmail: 'wifty@example.com'
 
+  AdminMode: 0
+  DevelMode: 1
+  LogConfig: etc/log4perl.conf
+
   Database:
+    AutoUpgrade: 1
+    CheckSchema: 1
     Driver: SQLite
     Host: localhost
     User: postgres
     Version: 0.0.21
     Password: ''
     RequireSSL: 0
+
   Plugins:
-    - SkeletonApp: {}
     - CompressedCSSandJS: {}
     - User: {}
     - Authentication::Password:
@@ -25,6 +30,15 @@ framework:
   MailerArgs:
     - %log/mail.log%
   SiteConfig: etc/site_config.yml
+
+  L10N: 
+    PoDir: share/po
+
+  View: 
+    FallbackHandler: Jifty::View::Declare::Handler
+    Handlers: 
+      - Jifty::View::Static::Handler
+      - Jifty::View::Declare::Handler
 
   Web:
     StaticRoot: share/web/static
