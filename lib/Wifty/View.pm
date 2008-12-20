@@ -31,8 +31,12 @@ template 'edit' => page {
 
     form { div { attr { class is 'form_wrapper' };
         div { attr { class is 'inline' };
-            unless ( $can_edit ) {
-            }
+            unless ( $can_edit ) { p {
+                outs(_("You don't have permission to edit this page."));
+                outs(' '. _("Perhaps logging in would help."));
+                outs(' '. _("In the mean time, though, you're welcome to view and copy the source of this page."). ' ');
+                tangent(url => '/login', label => _('Login'));
+            } }
             form_next_page url => '/view/'.$page->name;
             render_action $viewer, ['content'];
         };
