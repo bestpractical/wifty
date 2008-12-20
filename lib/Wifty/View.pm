@@ -29,9 +29,9 @@ template 'edit' => page {
 
     show('markup');
 
-    form { div { attr { class is 'form_wrapper' };
-        div { attr { class is 'inline' };
-            unless ( $can_edit ) { p {
+    form { div { attr { class => 'form_wrapper' };
+        div { attr { class => 'inline' };
+            unless ( $can_edit ) { p { attr { style => "width: 70%" };
                 outs(_("You don't have permission to edit this page."));
                 outs(' '. _("Perhaps logging in would help."));
                 outs(' '. _("In the mean time, though, you're welcome to view and copy the source of this page."). ' ');
@@ -41,7 +41,7 @@ template 'edit' => page {
             render_action $viewer, ['content'];
         };
         if ( $can_edit ) {
-            div { attr { class is 'line' };
+            div { attr { class => 'line' };
                 form_submit label => _('Save')
             }
         }
@@ -57,7 +57,7 @@ template create => page {
     div {
         show('markup');
 
-        form { div { attr { class is 'form_wrapper' };
+        form { div { attr { class => 'form_wrapper' };
             form_next_page url => '/view/' . $page;
             render_param $action, 'name',
                 render_as => 'hidden',
