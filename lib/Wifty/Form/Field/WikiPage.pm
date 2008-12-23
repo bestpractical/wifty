@@ -47,21 +47,6 @@ Wikify this field's C<current_value>
 sub wiki_content {
     my $self     = shift;
     my $content  = $self->current_value;
-    my $scrubber = HTML::Scrubber->new();
-
-    $scrubber->default(
-        0,
-        {   '*'   => 0,
-            id    => 1,
-            class => 1,
-            href  => qr{^(?:(?:\w+$)|http:|ftp:|https:|\.?/)}i,
-
-            # Match http, ftp and relative urls
-            face   => 1,
-            size   => 1,
-            target => 1
-        }
-    );
 
     $content =~ s/(?:\n\r|\r\n|\r)/\n/g;
 
@@ -71,16 +56,14 @@ sub wiki_content {
     $scrubber->comment(0);
 
     if (Jifty->config->app('Formatter') eq 'Markdown' ) {
-            require Text::Markdown;
-            $content = Text::Markdown::markdown( $content );
+        require Text::Markdown;
+        $content = Text::Markdown::markdown( $content );
     }
     elsif (Jifty->config->app('Formatter') eq 'Kwiki') {
         require Text::KwikiFormatish;
-        $content = Text::KwikiFormatish::format( $content);
+        $content = Text::KwikiFormatish::format( $content );
     }
-    #$content = $scrubber->scrub( $content );
     return ( $content );
-
 }
 
 =head2 rows
