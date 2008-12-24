@@ -35,6 +35,11 @@ template 'atom/pages' => sub {
     my ($pages, $title, $show_as) = get(qw(pages title show_as));
     $show_as ||= 'headlines';
 
+    # XXX: investigation required. Why Jifty doesn't send HTTP headers
+    # for us?
+    Jifty->handler->apache->content_type('application/atom+xml');
+    Jifty->handler->send_http_header;
+
     my $url = Jifty->web->url;
     my $feed = XML::Atom::SimpleFeed->new(
         title => $title, link => $url
