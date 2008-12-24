@@ -34,9 +34,10 @@ private template 'pages_links' => sub {
 template 'atom/pages' => sub {
     my ($pages, $title, $show_as) = get(qw(pages title show_as));
     $show_as ||= 'headlines';
+
+    my $url = Jifty->web->url;
     my $feed = XML::Atom::SimpleFeed->new(
-        title   => $title,
-        link    => Jifty->web->url,
+        title => $title, link => $url
     );
 
     while ( my $page = $pages->next ) {
@@ -54,7 +55,7 @@ template 'atom/pages' => sub {
 
         $feed->add_entry(
             title   => $page->name,
-            link    => Jifty->web->url . '/view/' . $page->name .'/'. $last_rev->id,
+            link    => $url . '/view/' . $page->name .'/'. $last_rev->id,
             author  => $page->updated_by->friendly_name,
             updated => $page->updated,
             summary => $summary,
