@@ -53,7 +53,10 @@ template 'atom/pages' => sub {
         }
         elsif ( $show_as eq 'diff' or $show_as eq 'diffs' ) {
             $summary = {
-                content => $last_rev->diff_from,
+                content =>
+                    '<pre>'. Jifty->web->escape( 
+                        $last_rev->diff_from( undef, STYLE => 'Text::Diff::Unified' )
+                    ) .'</pre>',
                 type => 'xhtml',
             };
         }
