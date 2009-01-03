@@ -55,8 +55,12 @@ sub wiki_content {
         $content = Text::Markdown::markdown( $content );
     }
     elsif (Jifty->config->app('Formatter') eq 'Kwiki') {
+        # XXX: we need a new release of Text::KwikiFormatish
+        # https://rt.cpan.org/Public/Bug/Display.html?id=42090
         require Text::KwikiFormatish;
-        $content = Text::KwikiFormatish::format( $content );
+        $content = Text::KwikiFormatish::format(
+            $content, prefix => '/view/',
+        );
     }
     return ( $content );
 }
