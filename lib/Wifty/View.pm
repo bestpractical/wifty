@@ -7,6 +7,14 @@ use Jifty::View::Declare -base;
 require Wifty::View::Feeds;
 alias Wifty::View::Feeds under 'feeds/';
 
+template 'robots.txt' => sub {
+outs_raw('User-agent: *
+Disallow: /history
+Disallow: /search
+');
+
+};
+
 template 'view' => page {
     my ( $page, $revision, $viewer ) = get(qw(page revision viewer));
     page_title is
