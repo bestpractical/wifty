@@ -11,6 +11,13 @@ before '*', run {
     $top->child( Home   => url => "/",                 label => _("Home") );
     $top->child( Recent => url => "/recent/changes",   label => _("Recent Changes") );
     $top->child( New    => url => "/recent/additions", label => _("New") );
+    if ( Jifty->web->current_user->id ) {
+        $top->child(
+            Stats => url =>
+            "/user/". Jifty->web->escape_uri(Jifty->web->current_user->username),
+            label => _("Stats"),
+        );
+    }
     $top->child( Search => url => "/search",           label => _("Search") );
 };
 
@@ -125,6 +132,14 @@ on qr{^/feeds/atom/recent/(changes|additions)(?:/(full|headlines?|diffs?))?$} =>
     }
     set( title => $title ); set( pages => $pages ); set( show_as => $show_as );
     show('/feeds/atom/pages');
+};
+
+on 'user/*' => run {
+    my $user = Wifty::Model::User->load_by_cols( name => URI::Escape::uri_unescape($1) );
+    abort(404) unless $user && $user->id;
+
+    set(user => $user);
+    show('/user/stats');
 };
 
 sub setup_page_nav {

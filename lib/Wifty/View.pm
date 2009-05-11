@@ -7,6 +7,9 @@ use Jifty::View::Declare -base;
 require Wifty::View::Feeds;
 alias Wifty::View::Feeds under 'feeds/';
 
+require Wifty::View::Users;
+alias Wifty::View::Users under 'user/';
+
 template 'robots.txt' => sub {
 outs_raw('User-agent: *
 Disallow: /history
@@ -102,7 +105,9 @@ template history => page {
                 label => $rev->created,
                 url   => '/view/' . $page->name . '/' . $rev->id
             );
-            outs( ' (' . $rev->created_by->friendly_name . ')' );
+            outs(' (');
+            user($rev->created_by);
+            outs(')');
             outs( ' ', _('%1 bytes', length $rev->content ) );
             render_region(
                 'revision-'. $rev->id .'-diff',
@@ -228,22 +233,47 @@ private template markup => sub {
 };
 
 private template page_list => sub {
-    my ( $pages, $id ) = get(qw(pages id));
-    dl {{ id is $id, class is "pagelist" }
-        while ( my $page = $pages->next ) {
-            dt {
-                hyperlink(
-                    label => $page->name,
-                    url   => '/view/' . $page->name
-                );
-            };
-            dd {
-                outs( $page->updated );
-                outs( ' - ('. $page->updated_by->friendly_name .')' );
-            };
-        }
+    my ($pages, $id, $hide) = get(qw(pages id hide));
+    my %hide = map {$_ => 1} @{ $hide || [] };
+
+    table { attr { id => $id, class => "pagelist" };
+        unless ( $hide{'header'} ) { row {
+            th {_('Page')};
+            th {_('Updated')} unless $hide{'updated'};
+            th {_('Created')} unless $hide{'created'};
+        } }
+        while ( my $page = $pages->next ) { row {
+            cell { hyperlink(
+                label => $page->name,
+                url   => '/view/' . $page->name
+            ) };
+            unless ( $hide{'updated'} ) {
+                cell { date_user( $page->updated, $page->updated_by ) }
+            }
+            unless ( $hide{'created'} ) {
+                cell { date_user( $page->created, $page->created_by ) }
+            }
+        } }
     };
 };
+
+sub date_user {
+    my ($date, $user) = @_;
+    return outs( _('%1 by %2', $date, $user->friendly_name ) )
+        unless $user->id;
+
+    return a { attr { href => '/user/'. $user->name };
+        _('%1 by %2', $date, $user->friendly_name)
+    }
+}
+
+sub user {
+    my $user = shift;
+    return $user->friendly_name unless $user->id;
+    return a { attr { href => '/user/'. $user->name };
+        $user->friendly_name
+    }
+}
 
 template 'helpers/diff' => sub {
     my ($from, $to, $show) = get(qw(from to show));
