@@ -1,6 +1,6 @@
 use inc::Module::Install;
 name('Wifty');
-version('0.01');
+version('0.02');
 requires('Jifty');
 requires('Text::Markdown');
 requires('HTML::Scrubber');
