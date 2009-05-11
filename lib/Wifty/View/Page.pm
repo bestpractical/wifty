@@ -16,9 +16,9 @@ sub render_page {
         };
     }
 
-    Template::Declare->new_buffer_frame;
+    Template::Declare->buffer->push( private => 1 );
     $self->instrument_content;
-    my $content = Template::Declare->end_buffer_frame->data;
+    my $content = Template::Declare->buffer->pop;
 
     div { attr { id is "header" }
         div { attr { id is "wikiheader" }
