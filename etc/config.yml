@@ -10,12 +10,12 @@ framework:
   LogConfig: etc/log4perl.conf
 
   Database:
+    Version: 0.0.23
     AutoUpgrade: 1
     CheckSchema: 1
     Driver: SQLite
     Host: localhost
     User: postgres
-    Version: 0.0.21
     Password: ''
     RequireSSL: 0
 
