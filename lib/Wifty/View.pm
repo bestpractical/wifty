@@ -90,19 +90,6 @@ template create => page {
     };
 };
 
-template no_such_page => page {
-    my ($page) = get(qw(page));
-
-    page_title is _("No '%1' page", $page);
-
-    p { 
-        q{Unfortunately, you've tried to reach a page that doesn't exist }
-        . q{yet, and you don't have permissions to create pages. If you }
-        . tangent( url => '/login', label => 'login' )
-        . q{, you'll be able to create new pages of your own.}
-    }
-};
-
 template history => page {
     my ( $page, $revisions ) = get(qw(page revisions));
     $revisions->do_search; # avoid count+fetch
@@ -353,5 +340,26 @@ private template 'diff/with_nav' => sub {
     hr {}
 };
 
+template 'error/create/require_auth' => page {
+    my ($page) = get(qw(page));
+
+    page_title is _("No '%1' page", $page);
+
+    p { 
+        q{Unfortunately, you've tried to reach a page that doesn't exist }
+        . q{yet, and you don't have permissions to create pages. If you }
+        . tangent( url => '/login', label => 'login' )
+        . q{, you'll be able to create new pages of your own.}
+    }
+};
+
+template 'error/black_ip' => page {
+    page_title is _("You're blacklisted");
+
+    p {
+        q{Unfortunately, your IP address has been blocked.}
+        .q{ You can not change any content on this wiki.}
+    }
+};
 
 1;
