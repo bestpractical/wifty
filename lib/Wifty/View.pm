@@ -28,6 +28,14 @@ template 'view' => page {
     render_param($viewer => 'content', label => '', render_mode => 'read');
 };
 
+template 'admin' => page {
+    page_title is 'Admin wiki';
+    form {
+        render_action( new_action( class => 'EditIPsBlackList') );
+        form_submit(label => _("Update"));
+    }
+};
+
 template 'edit' => page {
     my ( $page, $revision, $viewer ) = get(qw(page revision viewer));
 
