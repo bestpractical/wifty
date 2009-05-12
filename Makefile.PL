@@ -6,5 +6,6 @@ requires('Text::Markdown');
 requires('HTML::Scrubber');
 requires('Text::Diff::HTML');
 requires('XML::Atom::SimpleFeed');
+requires('List::Compare');
 recommends('Text::KwikiFormatish');
 WriteAll;
