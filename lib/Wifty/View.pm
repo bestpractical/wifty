@@ -52,9 +52,11 @@ template 'edit' => page {
         div { attr { class => 'inline' };
             unless ( $can_edit ) { p { attr { style => "width: 70%" };
                 outs(_("You don't have permission to edit this page."));
-                outs(' '. _("Perhaps logging in would help."));
                 outs(' '. _("In the mean time, though, you're welcome to view and copy the source of this page."). ' ');
-                tangent(url => '/login', label => _('Login'));
+                unless ( Jifty->web->current_user->id ) {
+                    outs(' '. _("Perhaps logging in would help."));
+                    tangent(url => '/login', label => _('Login'));
+                }
             } }
             form_next_page url => '/view/'.$page->name;
             render_action $viewer, ['content'];
