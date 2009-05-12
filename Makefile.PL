@@ -7,5 +7,7 @@ requires('HTML::Scrubber');
 requires('Text::Diff::HTML');
 requires('XML::Atom::SimpleFeed');
 requires('List::Compare');
+requires('Regexp::Common');
+requires('Scalar::Util');
 recommends('Text::KwikiFormatish');
 WriteAll;
