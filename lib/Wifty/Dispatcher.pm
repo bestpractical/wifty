@@ -1,6 +1,9 @@
 package Wifty::Dispatcher;
 use Jifty::Dispatcher -base;
 
+use strict;
+use warnings;
+
 # Generic restrictions
 under '/', run {
     Jifty->api->deny('ConfirmEmail');
@@ -11,14 +14,24 @@ before '*', run {
     $top->child( Home   => url => "/",                 label => _("Home") );
     $top->child( Recent => url => "/recent/changes",   label => _("Recent Changes") );
     $top->child( New    => url => "/recent/additions", label => _("New") );
-    if ( Jifty->web->current_user->id ) {
+    my $cu = Jifty->web->current_user;
+    if ( $cu->id ) {
         $top->child(
             Stats => url =>
-            "/user/". Jifty->web->escape_uri(Jifty->web->current_user->username),
+            "/user/". Jifty->web->escape_uri($cu->username),
             label => _("Stats"),
         );
+        $top->child(
+            Admin => url => "/admin/", label => _("Administration"),
+        ) if $cu->user_object->admin;
     }
     $top->child( Search => url => "/search",           label => _("Search") );
+};
+
+before qr{^/admin\b}, run {
+    my $cu = Jifty->web->current_user;
+    abort(403) unless $cu->id;
+    abort(403) unless $cu->user_object->admin;
 };
 
 # Default page
