@@ -10,7 +10,7 @@ framework:
   LogConfig: etc/log4perl.conf
 
   Database:
-    Version: 0.0.23
+    Version: 0.0.24
     AutoUpgrade: 1
     CheckSchema: 1
     Driver: SQLite

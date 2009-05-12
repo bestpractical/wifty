@@ -17,11 +17,15 @@ use Jifty::Record schema {
         render_as 'Wifty::Form::Field::WikiPage'
     ;
     column created =>
-        type is 'timestamp'
+        type is 'timestamp',
     ;
     column created_by =>
         refers_to Wifty::Model::User,
-        since '0.0.20'
+        since '0.0.20',
+    ;
+    column ip =>
+        type is 'varchar(15)',
+        since '0.0.24',
     ;
 };
 
@@ -38,7 +42,8 @@ sub create {
     my %args = (@_);
 
     my $now = DateTime->now();
-    $args{'created'} =  $now->ymd." ".$now->hms;
+    $args{'created'} ||=  $now->ymd." ".$now->hms;
+    $args{'ip'} ||= $ENV{'REMOTE_HOST'};
     $self->SUPER::create(%args);
 
 }
