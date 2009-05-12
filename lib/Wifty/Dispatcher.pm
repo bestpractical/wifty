@@ -30,8 +30,8 @@ before '*', run {
 
 before qr{^/admin\b}, run {
     my $cu = Jifty->web->current_user;
-    abort(403) unless $cu->id;
-    abort(403) unless $cu->user_object->admin;
+    return abort(403) unless $cu->id;
+    return abort(403) unless $cu->user_object->admin;
 };
 
 # Default page
