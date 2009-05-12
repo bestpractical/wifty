@@ -121,11 +121,22 @@ C<current_user_can> (which we inherit).
 sub current_user_can {
     my $self = shift;
     my $right = shift;
-    
-    if ($right ne 'read' and not $self->current_user->is_superuser) {
-        return 0;
+    my %args = @_;
+
+    return 1 if $self->current_user->is_superuser;
+
+    if ( $right eq 'read' ) {
+        return 0
+            if $args{'column'}
+            && $args{'column'} eq 'ip'
+            && !(
+                $self->current_user->id
+                && $self->current_user->user_object->admin
+            );
+        return 1;
     }
-    $self->SUPER::current_user_can($right, @_);
+
+    $self->SUPER::current_user_can($right, %args);
 }
 
 1;

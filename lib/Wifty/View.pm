@@ -104,6 +104,9 @@ template history => page {
             );
             outs(' (');
             user($rev->created_by);
+            if ( my $ip = $rev->ip ) { # only admins can see IPs
+                outs( ' - '. $ip );
+            }
             outs(')');
             outs( ' ', _('%1 bytes', length $rev->content ) );
             render_region(
