@@ -3,6 +3,12 @@ package Wifty::Model::User;
 use Jifty::DBI::Schema;
 use Wifty::Record schema {
     # column definitions
+    column admin =>
+        type is 'integer',
+        is mandatory,
+        default is 0,
+        since '0.0.22',
+    ;
 };
 
 # import columns: name, email and email_confirmed
