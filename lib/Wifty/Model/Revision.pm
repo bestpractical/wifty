@@ -33,7 +33,6 @@ use Wifty::Model::Page;
 
 sub since { '0.0.5' }
 
-
 sub create {
     my $self = shift;
     my %args = (@_);
@@ -49,19 +48,8 @@ sub previous {
     return undef unless $self->id;
 
     my $revisions = Wifty::Model::RevisionCollection->new;
-    $revisions->limit(
-        column         => 'page',
-        value          => $self->page->id,
-        quote_value    => 0,
-        case_sensitive => 1
-    );
-    $revisions->limit(
-        column         => 'id',
-        operator       => '<',
-        value          => $self->id,
-        quote_value    => 0,
-        case_sensitive => 1
-    );
+    $revisions->limit_by_page($self);
+    $revisions->older_than($self);
     $revisions->order_by( { column => 'id', order => 'desc' } );
     $revisions->rows_per_page(1);
     return $revisions->first;
@@ -72,19 +60,8 @@ sub next {
     return undef unless $self->id;
 
     my $revisions = Wifty::Model::RevisionCollection->new;
-    $revisions->limit(
-        column         => 'page',
-        value          => $self->page->id,
-        quote_value    => 0,
-        case_sensitive => 1
-    );
-    $revisions->limit(
-        column         => 'id',
-        operator       => '>',
-        value          => $self->id,
-        quote_value    => 0,
-        case_sensitive => 1
-    );
+    $revisions->limit_by_page($self);
+    $revisions->newer_than($self);
     $revisions->order_by( { column => 'id', order => 'asc' } );
     $revisions->rows_per_page(1);
     return $revisions->first;
@@ -144,6 +121,6 @@ sub current_user_can {
         return 0;
     }
     $self->SUPER::current_user_can($right, @_);
-
 }
+
 1;
