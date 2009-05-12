@@ -155,6 +155,15 @@ on 'user/*' => run {
     show('/user/stats');
 };
 
+sub error {
+    my ($action, $reason) = @_;
+    foreach my $page ( map { "error/$_" } "$action/$reason", "$reason", "$action", "" ) {
+        next unless $Jifty::Dispatcher::Dispatcher->template_exists($page);
+        show($page);
+        return;
+    }
+}
+
 sub setup_page_nav {
     my ($prefix, $page, $rev) = @_;
 
