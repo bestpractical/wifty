@@ -144,10 +144,17 @@ sub current_user_can {
     my $type = shift;
 
     if ($type eq 'create' || $type eq 'update') {
-        return 0 if
+        return wantarray? (0, 'require_auth'): 0 if
          Jifty->config->app('RequireAuth')
            && !$self->current_user->is_superuser
            && !$self->current_user->id;
+
+        if ( my $ip = $ENV{'REMOTE_HOST'} ) {
+            my $block = Jifty->app_class('Model::BlackList')->load_by_cols(
+                type => 'IP', value => $ip
+            );
+            return wantarray? (0, 'black_ip'): 0 if $block && $block->id;
+        }
         return 1;
     } elsif($type eq 'read') {
         return 1;
