@@ -41,15 +41,16 @@ on '/', run {
 
 # Create a page
 on '/create/*', run {
-     set page => $1;
-     set action => Jifty->web->new_action( class => 'CreatePage' );
+    set page => $1;
+    set action => Jifty->web->new_action( class => 'CreatePage' );
 
-     my $p = Wifty::Model::Page->new();
-     if($p->current_user_can('create')) {
-         show("/create");
-     } else {
-         show("/no_such_page");
-     }
+    my $p = Wifty::Model::Page->new;
+    my ($can, $reason) = $p->current_user_can('create');
+    unless ( $can ) {
+        error( create => $reason);
+    } else {
+        show("/create");
+    }
 };
 
 # View or edit a page
