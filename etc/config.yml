@@ -39,6 +39,7 @@ framework:
     Handlers: 
       - Jifty::View::Static::Handler
       - Jifty::View::Declare::Handler
+      - Jifty::View::Mason::Handler
 
   Web:
     StaticRoot: share/web/static
