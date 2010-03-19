@@ -22,8 +22,8 @@ ok($URL, "Started a test server");
 my $mech = Jifty::Test::WWW::Mechanize->new();
 
 $mech->get_ok($URL, "Got the homepage");
-ok($mech->find_link(text_regex => qr/Sign in/), 'Got the signin link');
-$mech->follow_link_ok(text_regex => qr/Sign in/);
+ok($mech->find_link(text_regex => qr/Login/), 'Got the login link');
+$mech->follow_link_ok(text_regex => qr/Login/);
 
 sub try_login {
     my $mech = shift;
@@ -47,7 +47,7 @@ $mech->content_contains("It doesn't look like there's an account by that name", 
 
 # With a blank password
 try_login($mech, 'someuser@localost', '');
-$mech->content_contains('Please fill in this field','Login fails with no password');
+$mech->content_contains("fill in the 'password' field",'Login fails with no password');
 
 # With the wrong password
 try_login($mech, 'someuser@localhost', 'badmemory');
@@ -56,3 +56,4 @@ $mech->content_contains('may have mistyped','Login fails with wrong password');
 # Try a correct login
 try_login($mech, 'someuser@localhost', 'sekrit');
 $mech->content_contains('Welcome back','Logged in');
+
