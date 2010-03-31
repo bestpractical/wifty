@@ -25,6 +25,7 @@ framework:
     - Authentication::Password:
         login_by: email
     - ViewDeclarePage: {}
+    - ErrorTemplates: {}
 
   Mailer: IO
   MailerArgs:
