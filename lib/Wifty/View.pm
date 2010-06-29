@@ -161,74 +161,84 @@ private template 'search_box' => sub {
 };
 
 private template markup => sub {
-    return undef unless Jifty->config->app('Formatter') eq 'Markdown';
+    my $formatter = Jifty->config->app('Formatter');
 
-    div {{ id is 'syntax' }
-        div {
-            a {{
-                href    is "#",
-                onclick is 'jQuery("syntax_content").toggle();return(false);'
-            } b {_('Wiki Syntax Help')} }
+    if ( $formatter eq 'Kwiki' ) {
+        div {{ id is 'syntax' }
+            hyperlink(
+                label => 'Kwiki Formatting Rules',
+                url   => 'http://www.kwiki.org/?KwikiFormattingRules'
+            );
         };
-        div {{ id is 'syntax_content' }
-            h3   {'Phrase Emphasis'};
-            code {
-                b {'**bold**'; };
-                i {'_italic_'};
+    }
+    elsif ( $formatter eq 'Markdown' ) {
+        div {{ id is 'syntax' }
+            div {
+                a {{
+                    href    is "#",
+                    onclick is 'jQuery("syntax_content").toggle();return(false);'
+                } b {_('Wiki Syntax Help')} }
             };
-
-            h3 {'Links'};
-
-            code {'Show me a [wiki page](WikiPage)'};
-            code {'An [example](http://url.com/ "Title")'};
-
-            h3 {'Headers'};
-
-            code { pre { join "\n",
-                '# Header 1', '## Header 1', '###### Header 6'
-            } };
-
-            h3 {'Lists'};
-
-            p {'Ordered, without paragraphs:'};
-
-            code { pre { join "\n", '1. Foo', '2. Bar' } };
-
-            p {'Unordered, with paragraphs:'};
-
-            code { pre { join "\n",
-                '*   A list item.', 
-                'With multiple paragraphs.',
-                '*   Bar',
-            } };
-
-            h3 {'Code Spans'};
-
-            p { code {'`<code>`'}; outs(' - spans are delimited by backticks') };
-
-            h3 {'Preformatted Code Blocks'};
-
-            p {'Indent every line of a code block by at least 4 spaces.'};
-
-            code {
-                pre {
-                    'This is a normal paragraph.' . "\n\n" . "\n"
-                        . '    This is a preformatted' . "\n"
-                        . '    code block.';
+            div {{ id is 'syntax_content' }
+                h3   {'Phrase Emphasis'};
+                code {
+                    b {'**bold**'; };
+                    i {'_italic_'};
                 };
+
+                h3 {'Links'};
+
+                code {'Show me a [wiki page](WikiPage)'};
+                code {'An [example](http://url.com/ "Title")'};
+
+                h3 {'Headers'};
+
+                code { pre { join "\n",
+                    '# Header 1', '## Header 1', '###### Header 6'
+                } };
+
+                h3 {'Lists'};
+
+                p {'Ordered, without paragraphs:'};
+
+                code { pre { join "\n", '1. Foo', '2. Bar' } };
+
+                p {'Unordered, with paragraphs:'};
+
+                code { pre { join "\n",
+                    '*   A list item.', 
+                    'With multiple paragraphs.',
+                    '*   Bar',
+                } };
+
+                h3 {'Code Spans'};
+
+                p { code {'`<code>`'}; outs(' - spans are delimited by backticks') };
+
+                h3 {'Preformatted Code Blocks'};
+
+                p {'Indent every line of a code block by at least 4 spaces.'};
+
+                code {
+                    pre {
+                        'This is a normal paragraph.' . "\n\n" . "\n"
+                            . '    This is a preformatted' . "\n"
+                            . '    code block.';
+                    };
+                };
+
+                h3 {'Horizontal Rules'};
+
+                p {
+                    outs('Three or more dashes: '); code {'---'};
+                };
+
+                address {
+                    outs_raw '(Thanks to <a href="http://daringfireball.net/projects/markdown/dingus">Daring Fireball</a>)';
+                }
             };
-
-            h3 {'Horizontal Rules'};
-
-            p {
-                outs('Three or more dashes: '); code {'---'};
-            };
-
-            address {
-                outs_raw '(Thanks to <a href="http://daringfireball.net/projects/markdown/dingus">Daring Fireball</a>)';
-            }
+            script { outs_raw 'jQuery("syntax_content").toggle();' };
         };
-        script { outs_raw 'jQuery("syntax_content").toggle();' };
     };
 };
 
