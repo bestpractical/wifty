@@ -37,7 +37,10 @@ my $match = $revs->first;
 
 print "No matches" unless $match and $match->id;
 
-print "Created: ", $match->created, "\n";
+my $prev = $match->previous;
+my $initial = ($prev and $prev->id) ? '' : ' (initial)';
+
+print "Created: ", $match->created, $initial, "\n";
 print "Author: ", $match->created_by->friendly_name, "\n\n";
 
 my $diff = $match->diff_from( $match->previous, STYLE => 'Text::Diff::Unified' );
