@@ -1,0 +1,49 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+use Jifty;
+BEGIN { Jifty->new }
+
+my $pagename = shift;
+my $text = shift;
+
+unless ( defined $pagename and defined $text ) {
+    print "usage: $0 page string\n";
+    exit 1;
+}
+
+use Wifty::CurrentUser;
+use Wifty::Model::Page;
+use Wifty::Model::RevisionCollection;
+
+my $superuser = Wifty::CurrentUser->superuser;
+
+my $page = Wifty::Model::Page->new( $superuser );
+$page->load_by_cols( name => $pagename );
+
+die "Unable to find page '$pagename'\n" unless $page->id;
+
+my $revs = $page->revisions;
+$revs->limit(
+    column      => 'content',
+    operator    => 'MATCHES',
+    value       => $text,
+);
+$revs->order_by( column => 'created', order => 'asc' );
+$revs->set_page_info( current_page => 1, per_page => 1 );
+
+my $match = $revs->first;
+
+print "No matches" unless $match and $match->id;
+
+print "Created: ", $match->created, "\n";
+print "Author: ", $match->created_by->friendly_name, "\n\n";
+
+my $diff = $match->diff_from( $match->previous, STYLE => 'Text::Diff::Unified' );
+
+# Workaround a bug in Text::Diff when there are trailing newline differences
+$diff =~ s/^-(.+?) ?\+\1\r$/$1/m;
+
+print "$diff\n";
+
