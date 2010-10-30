@@ -159,7 +159,7 @@ on 'user/*' => run {
 sub error {
     my ($action, $reason) = @_;
     foreach my $page ( map { "error/$_" } "$action/$reason", "$reason", "$action", "" ) {
-        next unless $Jifty::Dispatcher::Dispatcher->template_exists($page);
+        next unless Jifty->web->template_exists($page);
         show($page);
         return;
     }
