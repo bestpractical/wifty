@@ -4,3 +4,7 @@ wifty
 inc
 var
 log
+pm_to_blib
+blib/
+*.old
+*.bak
