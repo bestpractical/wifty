@@ -44,20 +44,33 @@ template 'edit' => page {
         ? _('Edit page %1 as of %2', $page->name, $revision->created)
         : _('Edit page %1');
 
-    my $can_edit = $page->current_user_can('update');
+    my ($can_edit, $reason) = $page->current_user_can('update');
 
     show('markup');
 
     form { div { attr { class => 'form_wrapper' };
         div { attr { class => 'inline' };
             unless ( $can_edit ) { p { attr { style => "width: 70%" };
-                outs(_("You don't have permission to edit this page."));
-                outs(' '. _("In the mean time, though, you're welcome to view and copy the source of this page."). ' ');
-                unless ( Jifty->web->current_user->id ) {
-                    outs(' '. _("Perhaps logging in would help."));
-                    tangent(url => '/login', label => _('Login'));
+                my $logged_in = Jifty->web->current_user->id;
+                if ( $reason eq 'read_only' ) {
+                    outs(_("This wiki is in read only mode."));
+                    unless ( $logged_in ) {
+                        outs(' '. _("Logging in with admin credentials would help."));
+                        tangent(url => '/login', label => _('Login'));
+                    }
+                } else {
+                    outs(_("You don't have permission to edit this page."));
+                    unless ( $logged_in ) {
+                        outs(' '. _("Perhaps logging in would help."));
+                        tangent(url => '/login', label => _('Login'));
+                    }
                 }
-            } }
+                }
+            
+                p { attr { style => "width: 70%" };
+                    outs(' '. _("In the mean time, though, you're welcome to view and copy the source of this page."). ' ');
+                }
+            }
             form_next_page url => '/view/'.$page->name;
             render_action $viewer, ['content'];
         };
@@ -372,6 +385,14 @@ template 'error/black_ip' => page {
     p {
         q{Unfortunately, your IP address has been blocked.}
         .q{ You can not change any content on this wiki.}
+    }
+};
+
+template 'error/read_only' => page {
+    page_title is _("Read only mode");
+
+    p {
+        q{This wiki is in read only mode.}
     }
 };
 

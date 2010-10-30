@@ -144,6 +144,13 @@ sub current_user_can {
     my $type = shift;
 
     if ($type eq 'create' || $type eq 'update') {
+        if ( Jifty->config->app('ReadOnly') ) {
+            my $cu = $self->current_user;
+            return wantarray? (0, 'read_only'): 0 if
+                !$cu->is_superuser
+                && !($cu->id && $cu->user_object->admin);
+        }
+
         return wantarray? (0, 'require_auth'): 0 if
          Jifty->config->app('RequireAuth')
            && !$self->current_user->is_superuser

@@ -52,6 +52,9 @@ application:
   # can anonymous users change wiki?
   RequireAuth: 1
 
+  # read only mode, logged in admins still allowed to change
+  ReadOnly: 0
+
   # The formatter options are "Markdown" and "Kwiki"
   Formatter: Markdown
 
