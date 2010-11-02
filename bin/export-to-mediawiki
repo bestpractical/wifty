@@ -1,0 +1,169 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+
+use Jifty;
+BEGIN { Jifty->new }
+
+use Wifty::CurrentUser;
+use Wifty::Model::PageCollection;
+use Encode qw(encode_utf8 decode_utf8);
+use XML::Simple;
+use HTML::WikiConverter;
+use HTML::WikiConverter::MediaWiki;
+
+use Getopt::Long;
+my ($HELP, $FILE, $SHALLOW);
+my $THRESH = 1.5; #Mb
+
+GetOptions(
+    'help'    => \$HELP,
+    'shallow' => \$SHALLOW,
+    'chunk=i' => \$THRESH,
+    'file=s'  => \$FILE,
+);
+
+if ($HELP or not defined $FILE) {
+    print <<"    EOT";
+Usage: $0 --file=export [--shallow] [--chunk=1.5]
+
+  --file=name   Output filename prefix (required)
+
+  --shallow     Makes a shallow export containing only the latest
+                revision of each page.
+
+  --chunk=#     Chunks the export into files of # megabytes.
+                Defaults to 1.5.
+
+    EOT
+    exit;
+}
+
+# Fake up a request and response since actions expect them
+Jifty->web->request( Jifty::Request->new );
+Jifty->web->response( Jifty::Response->new );
+
+my $siteinfo = xml(
+    siteinfo => {
+        sitename    => Jifty->config->app('WikiName'),
+        base        => Jifty->config->framework('Web')->{'BaseURL'},
+        generator   => join(' ', Jifty->config->framework('ApplicationName'),
+                                 Jifty->config->framework('Database')->{'Version'}),
+        case        => 'first-letter',
+    },
+    1   # indent one level
+);
+
+my $converter = HTML::WikiConverter->new(
+    dialect         => 'MediaWiki',
+    base_uri        => Jifty->config->framework('Web')->{'BaseURL'},
+    wiki_uri        => ['./', '/view/'],
+    pad_headings    => 1,
+    preserve_italic => 1,
+    preserve_bold   => 1,
+);
+
+# State variables
+my $LASTID  = undef;
+my $LASTREV = undef;
+my $CHUNK   = 1;
+my $FH;
+
+CHUNK: while ($CHUNK > 0) {
+    open $FH, '>', "$FILE-$CHUNK.xml"
+        or die "Unable to open file '$FILE-$CHUNK.xml' for writing: $!\n";
+
+    binmode $FH, ':encoding(utf8)';
+
+    # Header and site info
+    print $FH "<mediawiki xml:lang='en'>\n$siteinfo";
+
+    # Pages
+    my $super = Wifty::CurrentUser->superuser;
+    my $pages = Wifty::Model::PageCollection->new( current_user => $super );
+    $pages->order_by( column => 'id', order => 'asc' );
+
+    if (defined $LASTID) {
+        $pages->limit( column => 'id', operator => '>', value => $LASTID );
+    } else {
+        $pages->unlimit;
+    }
+
+    while (my $p = $pages->next) {
+        print $FH "  <page>\n";
+
+        # Page info
+        print $FH xml(undef, { title => $p->name }, 1);
+
+        # Revisions
+        my $revisions = $p->revisions;
+        $revisions->limit( column => 'id', operator => '<', value => $LASTREV )
+            if defined $LASTREV;
+        $revisions->order_by( column => 'id', order => 'desc' );
+        $revisions->set_page_info( per_page => 1, current_page => 1 )
+            if $SHALLOW;
+
+        while (my $r = $revisions->next) {
+            my $creator = $r->created_by;
+            my $created = $r->created;
+            $created =~ s/ /T/;
+            $created =~ s/$/Z/;
+
+            # Do the (kwiki|markdown) -> HTML -> mediawiki conversion here
+            my $wiki = '';
+            eval {
+                if (defined $r->content and length $r->content) {
+                    my $html = $r->viewer->form_field('content')->wiki_content;
+                    $wiki = decode_utf8($converter->html2wiki(encode_utf8($html)))
+                        if defined $html and length $html; # html2wiki chokes when there's no html
+                }
+            };
+            if ($@) {
+                # Don't die, just warn and move on
+                warn "Error converting " . $p->name . ": $@\n";
+                $wiki = "Error converting page: $@";
+            }
+
+            print $FH xml(
+                revision => {
+                    text        => $wiki,
+                    timestamp   => $created,
+                    contributor => {
+                        username => $creator->friendly_name,
+                        ($r->ip ? (ip => $r->ip) : ()),
+                    },
+                },
+                2
+            );
+
+            $LASTREV = $r->id;
+
+            if (tell $FH > $THRESH*1024*1024) {
+                warn "Starting a new chunk after ", tell $FH, " bytes\n";
+                next CHUNK;
+            }
+        }
+        print $FH "  </page>\n";
+        $LASTID  = $p->id;
+        $LASTREV = undef;
+    }
+
+    # That's all, captain
+    $CHUNK = -1;
+}
+continue {
+    print $FH "</mediawiki>\n";
+    close $FH;
+    $CHUNK++;
+}
+
+# Returns our XML with a root name and no attributes, optionally indented
+sub xml {
+    my ($root, $data, $indent) = @_;
+    my $space = " " x (($indent || 0) * 2);
+
+    my $xml = XMLout($data, RootName => $root, NoAttr => 1, SuppressEmpty => undef);
+    $xml =~ s/^(\s*<)/$space$1/gm;
+    return $xml;
+}
+
