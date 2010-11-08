@@ -13,14 +13,15 @@ use HTML::WikiConverter;
 use HTML::WikiConverter::MediaWiki;
 
 use Getopt::Long;
-my ($HELP, $FILE, $SHALLOW);
+my ($HELP, $FILE, $SHALLOW, $SKIPEMPTY);
 my $THRESH = 1.5; #Mb
 
 GetOptions(
-    'help'    => \$HELP,
-    'shallow' => \$SHALLOW,
-    'chunk=i' => \$THRESH,
-    'file=s'  => \$FILE,
+    'help'          => \$HELP,
+    'shallow'       => \$SHALLOW,
+    'chunk=i'       => \$THRESH,
+    'file=s'        => \$FILE,
+    'skip-empty'    => \$SKIPEMPTY,
 );
 
 if ($HELP or not defined $FILE) {
@@ -34,6 +35,9 @@ Usage: $0 --file=export [--shallow] [--chunk=1.5]
 
   --chunk=#     Chunks the export into files of # megabytes.
                 Defaults to 1.5.
+
+  --skip-empty  Omit empty pages from the export. Only applies to
+                shallow exports.
 
     EOT
     exit;
@@ -120,8 +124,15 @@ CHUNK: while ($CHUNK > 0) {
             };
             if ($@) {
                 # Don't die, just warn and move on
-                warn "Error converting " . $p->name . ": $@\n";
-                $wiki = "Error converting page: $@";
+                warn "Error converting page '" . $p->name . "', revision ", $r->id, ": $@\n";
+                $wiki = "Error converting page '$@', revision " . $r->id;
+            }
+            
+            # Skip empty pages
+            if ($SHALLOW and $SKIPEMPTY and $wiki =~ /^\s*$/) {
+                warn "Skipping empty page '", $p->name, "' (revision ", $r->id, ")\n";
+                $LASTREV = $r->id;
+                next;
             }
 
             print $FH xml(
