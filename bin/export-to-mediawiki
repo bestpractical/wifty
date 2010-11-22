@@ -151,6 +151,7 @@ CHUNK: while ($CHUNK > 0) {
 
             if (tell $FH > $THRESH*1024*1024) {
                 warn "Starting a new chunk after ", tell $FH, " bytes\n";
+                print $FH "  </page>\n";
                 next CHUNK;
             }
         }
